@@ -24,7 +24,7 @@
     get(k, d) { try { const v = localStorage.getItem('ss.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem('ss.' + k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
   };
-  let settings = Object.assign({ budget: 60, people: 2, dinners: 7, filters: { veg: false, protein: false, fast: false }, mode: 'mix', pantry: true, theme: 'system', blu: false, brandAll: false, listView: 'store', hideTicked: false, wake: false, planInput: 'buttons', accent: 'green' }, store.get('settings', {}));
+  let settings = Object.assign({ budget: 60, people: 2, dinners: 7, filters: { veg: false, protein: false, fast: false }, mode: 'mix', pantry: true, theme: 'system', blu: false, brandAll: false, listView: 'store', hideTicked: false, wake: false, planInput: 'buttons', accent: 'green', notify: false }, store.get('settings', {}));
   if (settings.diet === 'veg') settings.filters = Object.assign({}, settings.filters, { veg: true });
   delete settings.diet;
   settings.filters = Object.assign({ veg: false, protein: false, fast: false }, settings.filters);
@@ -101,12 +101,35 @@
         [['pam', 'gig'], ['gig', 'pam']].forEach(([ok, other]) => { if (it.ver[ok] && !it.ver[other]) { it[other] = it[ok]; it.packs[other] = it.packs[ok]; } });
       });
       priceMeta = { updated: j.updated || null, ver, where: j.where || null, blu: j.blu || null, rule: j.rule || null, brandItems };
+      priceMeta.last = j.last_update || null;
+      checkUpdateNotice();
       let pruned = 0;
       Object.keys(overrides).forEach((id) => { const o = overrides[id]; if (o && o.since && priceMeta.updated && o.since < priceMeta.updated) { delete overrides[id]; pruned++; } });
       if (pruned) { save(); setTimeout(() => toast(pruned + ' of your price edits were replaced by newer shop prices'), 600); }
     }).catch(() => {});
   }
 
+  // ---------- price-update notices ----------
+  // prices.json carries last_update {at, changed}. When a newer one appears we show a banner, and (if allowed) a system notification.
+  let pendingNotice = null;
+  function noticeText(l) { return l.changed + ' price' + (l.changed === 1 ? '' : 's') + ' changed' + (l.note ? ': ' + l.note : '.'); }
+  function checkUpdateNotice() {
+    const l = priceMeta.last;
+    if (!l || !l.at || !(l.changed > 0)) return;
+    const seen = store.get('seen', null);
+    if (seen === null) { store.set('seen', l.at); return; } // first visit: nothing to announce
+    if (l.at > seen) {
+      pendingNotice = l;
+      if (settings.notify && 'Notification' in window && Notification.permission === 'granted') showSystemNotice(l);
+    }
+  }
+  function showSystemNotice(l, force) {
+    const title = 'SpesaSmart: prices updated';
+    const opts = { body: noticeText(l), icon: 'icon-192.png', tag: 'prices-' + (force ? 'test' : l.at) };
+    if ('serviceWorker' in navigator) navigator.serviceWorker.ready.then((reg) => reg.showNotification(title, opts)).catch(() => { try { new Notification(title, opts); } catch (e) { /* unsupported */ } });
+    else { try { new Notification(title, opts); } catch (e) { /* unsupported */ } }
+  }
+  const noticeBanner = () => (pendingNotice ? `<div class="card" style="border-color:var(--acc)"><div class="row"><div><b>🔔 Prices updated</b><div class="mute small">${esc(noticeText(pendingNotice))}</div></div><button class="chip on" data-dismissnotice="1">OK</button></div></div>` : '');
   const eur = (n) => '€' + n.toFixed(2).replace('.', ',');
   const sgn = (n) => (n >= 0 ? '+' : '−') + eur(Math.abs(n));
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -461,6 +484,7 @@
       <div class="mute small" style="margin:12px 0 6px">Colour</div>${chips('accent', Object.keys(ACCENTS).map((k) => [k, `<span class="dot" style="background:${ACCENTS[k][1]}"></span>${ACCENTS[k][0]}`]), settings.accent)}</div>
       <div class="card"><h3>Plan my week controls</h3><div class="mute small" style="margin-bottom:8px">How you set budget, people and dinners on the Plan tab.</div>${chips('planInput', [['buttons', '+ / − buttons'], ['sliders', 'Sliders']], settings.planInput)}</div>
       <div class="card"><h3>Il Gigante Blu Card</h3><div class="mute small" style="margin-bottom:8px">Use Blu Card prices at Il Gigante wherever a card price is known. Card prices are only shown where they have been checked, otherwise the normal price is used.</div>${chips('blu', [['false', 'I don\'t have it'], ['true', 'I have a Blu Card']], String(settings.blu))}</div>
+      <div class="card"><h3>Price update alerts</h3><div class="mute small" style="margin-bottom:8px">Get a notification when the Wednesday/Sunday price update has changed prices. Alerts appear when you open the app after an update (a web app cannot ring in the background). On iPhone this needs the app added to the Home Screen.</div>${chips('notify', [['false', 'Off'], ['true', 'Notify me']], String(settings.notify))}${settings.notify ? '<button class="btn sec" id="testnotif" style="margin-top:10px">Send a test notification</button>' : ''}</div>
       <div class="card"><h3>Price data</h3><div class="mute small">${priceMeta.updated ? 'Last checked ' + esc(priceMeta.updated) + ' (Pam ' + priceMeta.ver.pam + ', Il Gigante ' + priceMeta.ver.gig + ' items; ' + priceMeta.brandItems + ' items with a name-brand option).' : 'All prices are estimates until checked.'} ${priceMeta.blu ? esc(priceMeta.blu) : ''} See the Prices tab to correct items.</div></div>
       <div class="card"><h3>Reset</h3><button class="btn sec" id="wipe">Delete my plan, ticks and edits</button></div>
       <p class="mute small" style="text-align:center;margin:20px 0 0;font-size:12px">Made by Rafael de Greiff with Claude</p>`;
@@ -484,6 +508,7 @@
     else if (h.startsWith('#/meals')) viewMeals();
     else if (h.startsWith('#/settings')) viewSettings();
     else viewPlan();
+    if (pendingNotice) app.insertAdjacentHTML('afterbegin', noticeBanner());
     window.scrollTo(0, 0);
   }
   const rerender = () => { const y = window.scrollY; route(); window.scrollTo(0, y); };
@@ -522,6 +547,13 @@
     const t = e.target.closest('button,a');
     if (!t) return;
     const d = t.dataset;
+    if (d.set === 'notify' && d.v === 'true') {
+      if (!('Notification' in window)) { toast('Notifications are not supported here. On iPhone, add the app to the Home Screen first.'); return; }
+      Notification.requestPermission().then((p) => { settings.notify = p === 'granted'; save(); if (p !== 'granted') toast('Notifications are blocked in your phone settings'); rerender(); });
+      return;
+    }
+    if (d.dismissnotice) { if (pendingNotice) store.set('seen', pendingNotice.at); pendingNotice = null; rerender(); return; }
+    if (t.id === 'testnotif') { showSystemNotice({ at: 'test', changed: 3, note: 'this is a test' }, true); toast('Test sent'); return; }
     if (d.set) {
       const v = d.v === 'true' ? true : d.v === 'false' ? false : d.v;
       settings[d.set] = v;
