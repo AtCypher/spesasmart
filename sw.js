@@ -1,5 +1,5 @@
-const V='spesasmart-v2';
-const FILES=['./','index.html','style.css','data.js','app.js','manifest.webmanifest','icon-180.png','icon-192.png','prices.json'];
+const V='spesasmart-v3';
+const FILES=['./','index.html','style.css','data.js','app.js','manifest.webmanifest','icon-180.png','icon-192.png','prices.json','prices-de.json','data-de.js'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(FILES)));self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))));self.clients.claim();});
 // network first (always revalidate so new prices/app code show up quickly), cache only as the offline fallback

@@ -1,0 +1,676 @@
+{
+ "updated": "2026-10-04",
+ "where": {
+  "ede": "Edeka24, der Versandshop von EDEKA (nicht die Preise im Markt in Hamburg). Nur haltbare Ware; frische Artikel sind Schätzungen und folgen dem Rewe-Preis.",
+  "rew": "REWE Lieferservice, Lieferung nach Hamburg-Eppendorf/Hoheluft (Online-Preise)"
+ },
+ "rule": "Günstigstes Standardprodukt, Eigenmarke wenn vorhanden (ja!, Beste Wahl, EDEKA Herzstücke). Markenebene: ein bekanntes Markenprodukt. Normale Regalpreise ohne Aktionen.",
+ "blu": "",
+ "items": {
+  "aglio": {
+   "rew": {
+    "price": 1.39,
+    "pack": 200,
+    "product": "Knoblauch 200 g im Netz"
+   }
+  },
+  "basilico": {
+   "rew": {
+    "price": 1.89,
+    "pack": 1,
+    "product": "Basilikum im Topf"
+   }
+  },
+  "basmati": {
+   "ede": {
+    "price": 2.99,
+    "pack": 500,
+    "product": "EDEKA Herzstücke Basmati-Reis im Kochbeutel 4x125 g"
+   },
+   "brand": {
+    "ede": {
+     "price": 3.99,
+     "pack": 500,
+     "product": "Ben's Original Basmati Reis 500 g"
+    },
+    "rew": {
+     "price": 3.79,
+     "pack": 500,
+     "product": "Ben's Original Basmati-Reis 500 g"
+    }
+   },
+   "rew": {
+    "price": 2.59,
+    "pack": 500,
+    "product": "REWE Beste Wahl Basmati Reis 4x125 g"
+   }
+  },
+  "broccoli": {
+   "rew": {
+    "price": 1.99,
+    "pack": 500,
+    "product": "Broccoli 500 g"
+   }
+  },
+  "brodo": {
+   "rew": {
+    "price": 1.19,
+    "pack": 10,
+    "product": "Maggi Brühwürfel 10 Würfel"
+   }
+  },
+  "burro": {
+   "rew": {
+    "price": 1.99,
+    "pack": 250,
+    "product": "REWE Beste Wahl Weidebutter Süßrahm 250 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 3.29,
+     "pack": 250,
+     "product": "Kerrygold Original Irische Butter 250 g"
+    }
+   }
+  },
+  "carote": {
+   "rew": {
+    "price": 1.25,
+    "pack": 1000,
+    "product": "Karotten 1 kg"
+   }
+  },
+  "ceci": {
+   "rew": {
+    "price": 0.59,
+    "pack": 265,
+    "product": "ja! Kichererbsen 265 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 1.11,
+     "pack": 265,
+     "product": "Bonduelle Kichererbsen 265 g"
+    }
+   }
+  },
+  "cipolle": {
+   "rew": {
+    "price": 1.69,
+    "pack": 1000,
+    "product": "Kartoffelhof Bahde Gelbe Zwiebeln 1 kg"
+   }
+  },
+  "cocco": {
+   "rew": {
+    "price": 1.49,
+    "pack": 400,
+    "product": "REWE Beste Wahl Kokosmilch cremig 400 ml"
+   },
+   "brand": {
+    "rew": {
+     "price": 2.09,
+     "pack": 250,
+     "product": "Aroy-D Kokosnussmilch 250 ml"
+    }
+   }
+  },
+  "couscous": {
+   "ede": {
+    "price": 1.99,
+    "pack": 500,
+    "product": "EDEKA Herzstücke Couscous 500 g"
+   },
+   "brand": {
+    "ede": {
+     "price": 1.89,
+     "pack": 500,
+     "product": "Alnatura Bio Couscous 500 g"
+    },
+    "rew": {
+     "price": 1.89,
+     "pack": 500,
+     "product": "Ahama Couscous 500 g"
+    }
+   },
+   "rew": {
+    "price": 1.29,
+    "pack": 500,
+    "product": "REWE Bio Couscous 500 g"
+   }
+  },
+  "fagioli": {
+   "ede": {
+    "price": 1.79,
+    "pack": 400,
+    "product": "EDEKA Herzstücke Weiße Riesenbohnen 400 g"
+   },
+   "rew": {
+    "price": 1.49,
+    "pack": 400,
+    "product": "REWE Beste Wahl Weiße Riesenbohnen 400 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 1.11,
+     "pack": 250,
+     "product": "Bonduelle Weiße Bohnen 250 g"
+    }
+   }
+  },
+  "funghi": {
+   "rew": {
+    "price": 2.39,
+    "pack": 250,
+    "product": "REWE Beste Wahl Champignons braun 250 g"
+   }
+  },
+  "gnocchi": {
+   "ede": {
+    "price": 1.59,
+    "pack": 500,
+    "product": "EDEKA Herzstücke Gnocchi 500 g"
+   },
+   "brand": {
+    "ede": {
+     "price": 1.99,
+     "pack": 500,
+     "product": "Delverde Gnocchi 500 g"
+    },
+    "rew": {
+     "price": 2.99,
+     "pack": 500,
+     "product": "Henglein Gnocchi 500 g"
+    }
+   },
+   "rew": {
+    "price": 0.99,
+    "pack": 500,
+    "product": "ja! Gnocchi di Patate 500 g"
+   }
+  },
+  "guanciale": {
+   "rew": {
+    "price": 5.99,
+    "pack": 250,
+    "product": "REWE Feine Welt Pancetta 250 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 3.99,
+     "pack": 100,
+     "product": "Marziale Pancetta per Carbonara Speckwürfel 100 g"
+    }
+   }
+  },
+  "insalata": {
+   "rew": {
+    "price": 1.89,
+    "pack": 150,
+    "product": "Florette Essentials Der Feine Salat 150 g"
+   }
+  },
+  "latte": {
+   "ede": {
+    "price": 0.89,
+    "pack": 500,
+    "product": "Hofgut H-Vollmilch 3,5% 0,5 l"
+   },
+   "brand": {
+    "ede": {
+     "price": 1.89,
+     "pack": 1000,
+     "product": "Berchtesgadener Land haltbare Milch 3,5% 1 l"
+    },
+    "rew": {
+     "price": 1.79,
+     "pack": 1000,
+     "product": "Bärenmarke Die Alpenfrische Vollmilch 1 l"
+    }
+   },
+   "rew": {
+    "price": 1.35,
+    "pack": 1000,
+    "product": "REWE Beste Wahl Weide Vollmilch 3,5% 1 l"
+   }
+  },
+  "lenticchie": {
+   "ede": {
+    "price": 1.59,
+    "pack": 400,
+    "product": "EDEKA Herzstücke Braune Linsen 400 g"
+   },
+   "rew": {
+    "price": 1.49,
+    "pack": 265,
+    "product": "REWE Bio Braune Linsen 265 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 1.89,
+     "pack": 265,
+     "product": "Bonduelle Linsen 265 g"
+    }
+   }
+  },
+  "limoni": {
+   "rew": {
+    "price": 1.69,
+    "pack": 500,
+    "product": "Zitronen 500 g im Netz"
+   }
+  },
+  "macinato": {
+   "rew": {
+    "price": 4.49,
+    "pack": 500,
+    "product": "ja! Hackfleisch gemischt 500 g (Rind/Schwein)"
+   }
+  },
+  "melanzane": {
+   "rew": {
+    "price": 1.49,
+    "pack": 300,
+    "product": "Aubergine 1 Stück (ca. 300 g)"
+   }
+  },
+  "merluzzo": {
+   "rew": {
+    "price": 7.99,
+    "pack": 475,
+    "product": "REWE Beste Wahl Atlantisches Kabeljaufilet 475 g (tiefgekühlt)"
+   }
+  },
+  "mozzarella": {
+   "rew": {
+    "price": 1.29,
+    "pack": 125,
+    "product": "REWE Bio Mozzarella 125 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 2.99,
+     "pack": 150,
+     "product": "Galbani Mozzarella Mini 150 g"
+    }
+   }
+  },
+  "olio": {
+   "ede": {
+    "price": 7.49,
+    "pack": 750,
+    "product": "EDEKA Bio natives Olivenöl extra 750 ml"
+   },
+   "brand": {
+    "ede": {
+     "price": 8.99,
+     "pack": 500,
+     "product": "Alnatura Bio Olivenöl nativ extra 500 ml"
+    },
+    "rew": {
+     "price": 7.99,
+     "pack": 500,
+     "product": "Bertolli Originale Natives Olivenöl Extra 500 ml"
+    }
+   },
+   "rew": {
+    "price": 6.39,
+    "pack": 500,
+    "product": "REWE Beste Wahl Griechisches Natives Olivenöl 500 ml"
+   }
+  },
+  "pane": {
+   "rew": {
+    "price": 1.99,
+    "pack": 500,
+    "product": "Harry 1688 Weizenmischbrot Unser Mildes 500 g"
+   }
+  },
+  "parmigiano": {
+   "rew": {
+    "price": 3.29,
+    "pack": 150,
+    "product": "Marca Italia Grana Padano gerieben 150 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 2.29,
+     "pack": 60,
+     "product": "Giovanni Ferrari Grana Padano gerieben 60 g"
+    }
+   }
+  },
+  "passata": {
+   "ede": {
+    "price": 1.99,
+    "pack": 500,
+    "product": "Pomito passierte Tomaten 500 g"
+   },
+   "brand": {
+    "ede": {
+     "price": 2.79,
+     "pack": 700,
+     "product": "Mutti Passierte Italienische Tomaten 700 g"
+    },
+    "rew": {
+     "price": 2.69,
+     "pack": 700,
+     "product": "Mutti Passierte Tomaten 700 g"
+    }
+   },
+   "rew": {
+    "price": 0.65,
+    "pack": 500,
+    "product": "ja! Tomaten passiert 500 g"
+   }
+  },
+  "patate": {
+   "rew": {
+    "price": 2.49,
+    "pack": 1500,
+    "product": "Bio Kartoffeln vorwiegend festkochend 1,5 kg"
+   }
+  },
+  "pelati": {
+   "ede": {
+    "price": 2.19,
+    "pack": 400,
+    "product": "Oro di Parma Tomaten stückig 400 g"
+   },
+   "rew": {
+    "price": 0.65,
+    "pack": 400,
+    "product": "REWE Bio Tomaten in Stücken 400 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 1.99,
+     "pack": 400,
+     "product": "Oro di Parma Stückige Tomaten 400 g"
+    }
+   }
+  },
+  "penne": {
+   "ede": {
+    "price": 1.59,
+    "pack": 500,
+    "product": "Alnatura Bio Penne 500 g"
+   },
+   "brand": {
+    "ede": {
+     "price": 2.19,
+     "pack": 500,
+     "product": "Barilla Penne Rigate 500 g"
+    },
+    "rew": {
+     "price": 1.99,
+     "pack": 500,
+     "product": "Barilla Penne Rigate Nr.73 500 g"
+    }
+   },
+   "rew": {
+    "price": 0.69,
+    "pack": 500,
+    "product": "ja! Penne Rigate 500 g"
+   }
+  },
+  "peperoni": {
+   "rew": {
+    "price": 1.59,
+    "pack": 500,
+    "product": "Paprika rot 500 g"
+   }
+  },
+  "pesto": {
+   "ede": {
+    "price": 2.29,
+    "pack": 190,
+    "product": "EDEKA Herzstücke Pesto alla Genovese 190 g"
+   },
+   "brand": {
+    "ede": {
+     "price": 3.59,
+     "pack": 190,
+     "product": "Barilla Pesto Basilico e Rucola 190 g"
+    },
+    "rew": {
+     "price": 3.49,
+     "pack": 190,
+     "product": "Barilla Pesto alla Genovese 190 g"
+    }
+   },
+   "rew": {
+    "price": 0.99,
+    "pack": 190,
+    "product": "ja! Pesto Verde 190 g"
+   }
+  },
+  "piselli": {
+   "ede": {
+    "price": 1.89,
+    "pack": 400,
+    "product": "Bonduelle Junge Erbsen Feine Auslese 400 g (Dose)"
+   },
+   "rew": {
+    "price": 2.39,
+    "pack": 1000,
+    "product": "ja! Junge Erbsen sehr fein tiefgekühlt 1 kg"
+   },
+   "brand": {
+    "rew": {
+     "price": 2.89,
+     "pack": 400,
+     "product": "Iglo Gartenerbsen 400 g"
+    }
+   }
+  },
+  "pollo": {
+   "rew": {
+    "price": 6.79,
+    "pack": 600,
+    "product": "ja! Hähnchen-Brustfilet 600 g"
+   }
+  },
+  "pomodorini": {
+   "rew": {
+    "price": 1.39,
+    "pack": 250,
+    "product": "Cherry Romatomaten 250 g"
+   }
+  },
+  "ricotta": {
+   "rew": {
+    "price": 1.55,
+    "pack": 250,
+    "product": "Marca Italia Ricotta 250 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 3.29,
+     "pack": 250,
+     "product": "Galbani Ricotta Cremosa 250 g"
+    }
+   }
+  },
+  "riso": {
+   "ede": {
+    "price": 2.79,
+    "pack": 500,
+    "product": "Oryza Risotto Reis 500 g"
+   },
+   "rew": {
+    "price": 1.99,
+    "pack": 500,
+    "product": "REWE Beste Wahl Risotto-Reis 500 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 2.49,
+     "pack": 500,
+     "product": "Oryza Risotto- & Paella-Reis 500 g"
+    }
+   }
+  },
+  "sale": {
+   "ede": {
+    "price": 0.89,
+    "pack": 500,
+    "product": "Bad Reichenhaller Jodsalz 500 g"
+   },
+   "rew": {
+    "price": 0.79,
+    "pack": 500,
+    "product": "REWE Beste Wahl Jodsalz 500 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 0.89,
+     "pack": 500,
+     "product": "Bad Reichenhaller Marken-Jodsalz 500 g"
+    }
+   }
+  },
+  "salmone": {
+   "rew": {
+    "price": 4.99,
+    "pack": 250,
+    "product": "ja! Lachsfilet 250 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 6.39,
+     "pack": 250,
+     "product": "Deutsche See Lachsfilet 250 g"
+    }
+   }
+  },
+  "salsiccia": {
+   "rew": {
+    "price": 5.29,
+    "pack": 300,
+    "product": "REWE Feine Welt Salsiccia Classica 300 g"
+   }
+  },
+  "spaghetti": {
+   "ede": {
+    "price": 1.59,
+    "pack": 500,
+    "product": "EDEKA Herzstücke Spaghetti 500 g"
+   },
+   "brand": {
+    "ede": {
+     "price": 1.99,
+     "pack": 500,
+     "product": "Delverde Spaghetti 500 g"
+    },
+    "rew": {
+     "price": 1.99,
+     "pack": 500,
+     "product": "Barilla Spaghetti Nr.5 500 g"
+    }
+   },
+   "rew": {
+    "price": 1.49,
+    "pack": 500,
+    "product": "REWE Beste Wahl Spaghetti N°3 500 g"
+   }
+  },
+  "spinaci": {
+   "rew": {
+    "price": 2.39,
+    "pack": 1000,
+    "product": "ja! Blattspinat tiefgekühlt 1 kg"
+   },
+   "brand": {
+    "rew": {
+     "price": 2.99,
+     "pack": 500,
+     "product": "Iglo Blattspinat 500 g"
+    }
+   }
+  },
+  "tofu": {
+   "ede": {
+    "price": 1.79,
+    "pack": 200,
+    "product": "Alnatura Bio Tofu Natur 200 g"
+   },
+   "rew": {
+    "price": 2.29,
+    "pack": 400,
+    "product": "REWE Bio pflanzlich Tofu Natur 2x200 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 1.99,
+     "pack": 200,
+     "product": "Taifun Bio Tofu natur 200 g"
+    }
+   }
+  },
+  "tonno": {
+   "ede": {
+    "price": 2.49,
+    "pack": 160,
+    "product": "EDEKA MSC Herzstücke Thunfischstücke in Olivenöl 160 g"
+   },
+   "brand": {
+    "ede": {
+     "price": 3.59,
+     "pack": 185,
+     "product": "Deutsche See Thunfisch in Olivenöl 185 g"
+    },
+    "rew": {
+     "price": 3.59,
+     "pack": 140,
+     "product": "Saupiquet Thunfisch in Olivenöl 140 g"
+    }
+   },
+   "rew": {
+    "price": 1.79,
+    "pack": 185,
+    "product": "ja! Thunfisch Filets in nativem Olivenöl extra 185 g"
+   }
+  },
+  "tortillas": {
+   "ede": {
+    "price": 1.79,
+    "pack": 380,
+    "product": "EDEKA Herzstücke Tortilla Wraps Mais 380 g"
+   },
+   "rew": {
+    "price": 1.59,
+    "pack": 496,
+    "product": "ja! Weizen Tortillas 496 g"
+   },
+   "brand": {
+    "rew": {
+     "price": 3.29,
+     "pack": 370,
+     "product": "Fuego Tortillas Classic 370 g"
+    }
+   }
+  },
+  "uova": {
+   "rew": {
+    "price": 2.29,
+    "pack": 6,
+    "product": "REWE Beste Wahl Eier Freilandhaltung 6 Stück"
+   },
+   "brand": {
+    "rew": {
+     "price": 2.79,
+     "pack": 6,
+     "product": "Cassenshof Eier Freilandhaltung 6 Stück"
+    }
+   }
+  },
+  "zucchine": {
+   "rew": {
+    "price": 0.92,
+    "pack": 400,
+    "product": "Zucchini grün ca. 400 g (2,29 €/kg)"
+   }
+  }
+ }
+}
