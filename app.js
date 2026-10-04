@@ -425,7 +425,8 @@
     app.innerHTML = `<div class="card"><h3>Appearance</h3>${chips('theme', [['system', 'Automatic'], ['light', 'Light'], ['dark', 'Dark']], settings.theme)}</div>
       <div class="card"><h3>Il Gigante Blu Card</h3><div class="mute small" style="margin-bottom:8px">Use Blu Card prices at Il Gigante wherever a card price is known. Card prices are only shown where they have been checked, otherwise the normal price is used.</div>${chips('blu', [['false', 'I don\'t have it'], ['true', 'I have a Blu Card']], String(settings.blu))}</div>
       <div class="card"><h3>Price data</h3><div class="mute small">${priceMeta.updated ? 'Last checked ' + esc(priceMeta.updated) + ' (Pam ' + priceMeta.ver.pam + ', Il Gigante ' + priceMeta.ver.gig + ' items; ' + priceMeta.brandItems + ' items with a name-brand option).' : 'All prices are estimates until checked.'} ${priceMeta.blu ? esc(priceMeta.blu) : ''} See the Prices tab to correct items.</div></div>
-      <div class="card"><h3>Reset</h3><button class="btn sec" id="wipe">Delete my plan, ticks and edits</button></div>`;
+      <div class="card"><h3>Reset</h3><button class="btn sec" id="wipe">Delete my plan, ticks and edits</button></div>
+      <p class="mute small" style="text-align:center;margin:20px 0 0;font-size:12px">Made by Rafael de Greiff with Claude</p>`;
   }
 
   function setHead(title, back, href) {
