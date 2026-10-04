@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SpesaSmart</title>
+<meta name="theme-color" content="#1f8a5b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SpesaSmart">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header id="top"><h1 id="title">SpesaSmart</h1><button id="back" hidden aria-label="Back">‹ Back</button></header>
+<main id="app"></main>
+<nav id="tabs">
+  <a href="#/plan" data-tab="plan"><span>🍽️</span>Plan</a>
+  <a href="#/meals" data-tab="meals"><span>📖</span>Meals</a>
+  <a href="#/list" data-tab="list"><span>🛒</span>List</a>
+  <a href="#/prices" data-tab="prices"><span>🏷️</span>Prices</a>
+  <a href="#/settings" data-tab="settings"><span>⚙️</span>Settings</a>
+</nav>
+<div id="sheet" hidden></div>
+<div id="toast" hidden></div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,851 @@
+{
+ "updated": "2026-10-04",
+ "where": {
+  "pam": "Pam a Casa online catalogue (default store)",
+  "gig": "Il Gigante San Giuliano Milanese, Via della Pace 45 (store pickup prices)"
+ },
+ "rule": "Store tier: cheapest standard product, store brand where one exists. Name-brand tier: a well-known brand. Regular shelf prices, promos excluded.",
+ "blu": "Blu Card prices found this week only on name-brand products: passata (Petti), tuna (Consorcio), canned legumes (Valfrutta Bio), frozen peas (FRoSTA).",
+ "items": {
+  "spaghetti": {
+   "pam": {
+    "price": 0.55,
+    "pack": 500,
+    "product": "PAM Pasta di semola spaghetti 500 g"
+   },
+   "gig": {
+    "price": 0.79,
+    "pack": 500,
+    "product": "IL GIGANTE Spaghetti N°4 500 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 1.75,
+     "pack": 500,
+     "product": "De Cecco Spaghetti 500 g"
+    },
+    "gig": {
+     "price": 1.66,
+     "pack": 500,
+     "product": "De Cecco Spaghetti N°12 500 g"
+    }
+   }
+  },
+  "penne": {
+   "pam": {
+    "price": 0.55,
+    "pack": 500,
+    "product": "PAM Pasta di semola penne rigate 500 g"
+   },
+   "gig": {
+    "price": 0.79,
+    "pack": 500,
+    "product": "IL GIGANTE Penne Rigate N°32 500 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 1.29,
+     "pack": 500,
+     "product": "Barilla Penne rigate al bronzo 500 g"
+    },
+    "gig": {
+     "price": 1.66,
+     "pack": 500,
+     "product": "De Cecco Penne rigate N°41 500 g"
+    }
+   }
+  },
+  "gnocchi": {
+   "pam": {
+    "price": 0.99,
+    "pack": 500,
+    "product": "PAM Gnocchi di patate 500 g"
+   },
+   "gig": {
+    "price": 0.79,
+    "pack": 500,
+    "product": "IL GIGANTE Gnocchi N°43 500 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 3.09,
+     "pack": 500,
+     "product": "Rana Gnocchi di patate 500 g"
+    },
+    "gig": {
+     "price": 1.67,
+     "pack": 500,
+     "product": "Rummo Gnocchi di patate 500 g"
+    }
+   }
+  },
+  "riso": {
+   "pam": {
+    "price": 2.49,
+    "pack": 1000,
+    "product": "PAM Riso arborio sottovuoto 1 kg"
+   },
+   "gig": {
+    "price": 4.1,
+    "pack": 1000,
+    "product": "Riso Scotti Arborio 1 kg"
+   },
+   "brand": {
+    "pam": {
+     "price": 4.85,
+     "pack": 1000,
+     "product": "Scotti Riso arborio superfino 1 kg"
+    }
+   }
+  },
+  "basmati": {
+   "pam": {
+    "price": 2.79,
+    "pack": 1000,
+    "product": "PAM Riso basmati 1 kg"
+   },
+   "gig": {
+    "price": 4.13,
+    "pack": 1000,
+    "product": "Curtiriso Basmati 1 kg"
+   },
+   "brand": {
+    "pam": {
+     "price": 3.15,
+     "pack": 500,
+     "product": "Scotti Basmati profumato 500 g"
+    },
+    "gig": {
+     "price": 2.89,
+     "pack": 500,
+     "product": "Riso Scotti Basmati profumato 500 g"
+    }
+   }
+  },
+  "couscous": {
+   "pam": {
+    "price": 1.39,
+    "pack": 500,
+    "product": "PAM Cous cous grano duro 500 g"
+   },
+   "gig": {
+    "price": 1.79,
+    "pack": 500,
+    "product": "IL GIGANTE Cous Cous 500 g"
+   }
+  },
+  "pane": {
+   "pam": {
+    "price": 1.12,
+    "pack": 400,
+    "product": "Pane comune bananina 400 g"
+   },
+   "gig": {
+    "price": 2.15,
+    "pack": 500,
+    "product": "Pane fresco casereccio, sold by weight (4,30 €/kg), ~500 g"
+   }
+  },
+  "tortillas": {
+   "pam": {
+    "price": 1.25,
+    "pack": 200,
+    "product": "PAM Tortilla naturale 200 g"
+   },
+   "gig": {
+    "price": 3.7,
+    "pack": 335,
+    "product": "Old El Paso 8 Tortillas 335 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 3.99,
+     "pack": 326,
+     "product": "Old El Paso Tortillas mexicanas 326 g"
+    }
+   }
+  },
+  "ceci": {
+   "pam": {
+    "price": 0.49,
+    "pack": 400,
+    "product": "PAM Ceci lessati 400 g"
+   },
+   "gig": {
+    "price": 0.65,
+    "pack": 400,
+    "product": "IL GIGANTE Ceci Lessati 400 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 2.49,
+     "pack": 800,
+     "product": "Colfiorito Ceci 800 g"
+    },
+    "gig": {
+     "price": 1.85,
+     "pack": 360,
+     "product": "Valfrutta Bio Ceci 360 g",
+     "blu": 1.29
+    }
+   }
+  },
+  "lenticchie": {
+   "pam": {
+    "price": 0.49,
+    "pack": 400,
+    "product": "PAM Lenticchie lessate 400 g"
+   },
+   "gig": {
+    "price": 0.65,
+    "pack": 400,
+    "product": "IL GIGANTE Lenticchie Lessate 400 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 3.05,
+     "pack": 400,
+     "product": "Colfiorito Lenticchie Italia 400 g"
+    },
+    "gig": {
+     "price": 1.85,
+     "pack": 360,
+     "product": "Valfrutta Bio Lenticchie 360 g",
+     "blu": 1.29
+    }
+   }
+  },
+  "fagioli": {
+   "pam": {
+    "price": 0.49,
+    "pack": 400,
+    "product": "PAM Fagioli cannellini lessati 400 g"
+   },
+   "gig": {
+    "price": 0.65,
+    "pack": 400,
+    "product": "IL GIGANTE Fagioli Cannellini Lessati 400 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 1.35,
+     "pack": 360,
+     "product": "Valfrutta Fagioli cannellini spollichini 360 g"
+    },
+    "gig": {
+     "price": 1.85,
+     "pack": 360,
+     "product": "Valfrutta Bio Cannellini 360 g",
+     "blu": 1.29
+    }
+   }
+  },
+  "passata": {
+   "pam": {
+    "price": 0.99,
+    "pack": 680,
+    "product": "PAM Passata di pomodoro casereccia 680 g"
+   },
+   "gig": {
+    "price": 0.95,
+    "pack": 500,
+    "product": "Pomì Passata di pomodoro 500 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 1.95,
+     "pack": 700,
+     "product": "Le Conserve della Nonna Passata di pomodoro 700 g"
+    },
+    "gig": {
+     "price": 1.98,
+     "pack": 700,
+     "product": "Petti Il Delicato Passata extrafine 700 g",
+     "blu": 1.38
+    }
+   }
+  },
+  "pelati": {
+   "pam": {
+    "price": 0.55,
+    "pack": 400,
+    "product": "PAM Pomodori pelati 400 g"
+   },
+   "gig": {
+    "price": 0.79,
+    "pack": 400,
+    "product": "IL GIGANTE Pomodori Pelati 400 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 1.45,
+     "pack": 400,
+     "product": "Cirio Pomodori pelati 400 g"
+    },
+    "gig": {
+     "price": 1.44,
+     "pack": 400,
+     "product": "Cirio Pelati 400 g"
+    }
+   }
+  },
+  "tonno": {
+   "pam": {
+    "price": 4.19,
+    "pack": 210,
+    "product": "Nostromo Tonno in olio di oliva 3x70 g (regular price)"
+   },
+   "gig": {
+    "price": 2.19,
+    "pack": 140,
+    "product": "IL GIGANTE Tonno all'olio di oliva 140 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 6.79,
+     "pack": 320,
+     "product": "Rio Mare Tonno all'olio di oliva 4x80 g"
+    },
+    "gig": {
+     "price": 7.99,
+     "pack": 175,
+     "product": "Consorcio Tonno in olio d'oliva 175 g",
+     "blu": 3.99
+    }
+   }
+  },
+  "pesto": {
+   "pam": {
+    "price": 1.69,
+    "pack": 90,
+    "product": "Viva la Mamma Pesto fresco 90 g"
+   },
+   "gig": {
+    "price": 1.85,
+    "pack": 190,
+    "product": "IL GIGANTE Pesto alla genovese 190 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 3.45,
+     "pack": 90,
+     "product": "Il Pesto di Prà Pesto genovese 90 g"
+    },
+    "gig": {
+     "price": 2.95,
+     "pack": 90,
+     "product": "Il Pesto di Prà Pesto genovese 90 g"
+    }
+   }
+  },
+  "cocco": {
+   "pam": {
+    "price": 4.19,
+    "pack": 400,
+    "product": "Alimenta Latte-latte cocco 400 ml"
+   }
+  },
+  "brodo": {
+   "pam": {
+    "price": 1.35,
+    "pack": 10,
+    "product": "STAR Dado vegetale x10"
+   },
+   "gig": {
+    "price": 1.18,
+    "pack": 10,
+    "product": "Star Il Mio Dado Vegetale 10 dadi"
+   },
+   "brand": {
+    "pam": {
+     "price": 1.65,
+     "pack": 10,
+     "product": "Knorr Dado vegetale 10 dadi"
+    }
+   }
+  },
+  "olio": {
+   "pam": {
+    "price": 5.89,
+    "pack": 1000,
+    "product": "Ulisse Olio extra vergine 1 l"
+   },
+   "gig": {
+    "price": 6.99,
+    "pack": 1000,
+    "product": "IL GIGANTE Olio extra vergine 1 l"
+   },
+   "brand": {
+    "pam": {
+     "price": 8.19,
+     "pack": 750,
+     "product": "Filippo Berio Olio extra vergine classico 750 ml"
+    },
+    "gig": {
+     "price": 10.45,
+     "pack": 1000,
+     "product": "Bertolli Gentile Olio extra vergine 1 l"
+    }
+   }
+  },
+  "sale": {
+   "pam": {
+    "price": 0.35,
+    "pack": 1000,
+    "product": "Sale fino mare primo prezzo 1 kg"
+   },
+   "gig": {
+    "price": 0.6,
+    "pack": 1000,
+    "product": "IL GIGANTE Sale iodato marino fino 1 kg"
+   },
+   "brand": {
+    "pam": {
+     "price": 0.89,
+     "pack": 1000,
+     "product": "Gemma di Mare Sale marino iodato fino 1 kg"
+    },
+    "gig": {
+     "price": 0.89,
+     "pack": 1000,
+     "product": "Gemma di Mare Sale marino iodato fino 1 kg"
+    }
+   }
+  },
+  "latte": {
+   "pam": {
+    "price": 1.75,
+    "pack": 1000,
+    "product": "Friuli Latte intero UHT 1 l"
+   },
+   "gig": {
+    "price": 1.25,
+    "pack": 1000,
+    "product": "IL GIGANTE Latte intero pastorizzato microfiltrato 1 l"
+   },
+   "brand": {
+    "pam": {
+     "price": 1.95,
+     "pack": 1000,
+     "product": "Granarolo Latte intero UHT 1 l"
+    },
+    "gig": {
+     "price": 1.79,
+     "pack": 1000,
+     "product": "Granarolo Latte intero UHT 1 l"
+    }
+   }
+  },
+  "uova": {
+   "pam": {
+    "price": 2.35,
+    "pack": 6,
+    "product": "Naturelle 6 uova Piemonte"
+   },
+   "gig": {
+    "price": 1.79,
+    "pack": 6,
+    "product": "IL GIGANTE 6 uova da allevamento a terra"
+   },
+   "brand": {
+    "pam": {
+     "price": 3.15,
+     "pack": 6,
+     "product": "Pam Bio 6 uova fresche"
+    },
+    "gig": {
+     "price": 2.99,
+     "pack": 6,
+     "product": "Fileni 6 uova all'aperto"
+    }
+   }
+  },
+  "mozzarella": {
+   "pam": {
+    "price": 0.99,
+    "pack": 125,
+    "product": "PAM Mozzarella 125 g"
+   },
+   "gig": {
+    "price": 2.99,
+    "pack": 400,
+    "product": "IL GIGANTE Mozzarella 400 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 1.95,
+     "pack": 125,
+     "product": "Vallelata Mozzarella 125 g"
+    },
+    "gig": {
+     "price": 1.6,
+     "pack": 125,
+     "product": "Galbani Santa Lucia Mozzarella 125 g"
+    }
+   }
+  },
+  "parmigiano": {
+   "pam": {
+    "price": 2.15,
+    "pack": 100,
+    "product": "Unigrana Parmigiano Reggiano DOP grattugiato 100 g"
+   },
+   "gig": {
+    "price": 2.19,
+    "pack": 90,
+    "product": "IL GIGANTE Parmigiano Reggiano DOP fresco di grattugia 90 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 4.05,
+     "pack": 90,
+     "product": "Parmareggio Parmigiano Reggiano grattugiato 90 g"
+    },
+    "gig": {
+     "price": 2.69,
+     "pack": 90,
+     "product": "Parmissimo Parmigiano Reggiano DOP grattugiato 90 g"
+    }
+   }
+  },
+  "ricotta": {
+   "pam": {
+    "price": 0.79,
+    "pack": 250,
+    "product": "PAM Ricotta vaccina 250 g"
+   },
+   "gig": {
+    "price": 0.98,
+    "pack": 250,
+    "product": "IL GIGANTE Ricotta 250 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 1.95,
+     "pack": 250,
+     "product": "Galbani Ricotta fresca Vallelata 250 g"
+    },
+    "gig": {
+     "price": 1.31,
+     "pack": 250,
+     "product": "Galbani Santa Lucia Ricotta 250 g"
+    }
+   }
+  },
+  "burro": {
+   "pam": {
+    "price": 3.89,
+    "pack": 250,
+    "product": "Soresina Burro 250 g"
+   },
+   "gig": {
+    "price": 2.29,
+    "pack": 250,
+    "product": "IL GIGANTE Burro 250 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 4.89,
+     "pack": 250,
+     "product": "Antica Abbazia Burro 250 g"
+    },
+    "gig": {
+     "price": 4.19,
+     "pack": 200,
+     "product": "Lurpak Burro classico 200 g"
+    }
+   }
+  },
+  "tofu": {
+   "pam": {
+    "price": 1.99,
+    "pack": 250,
+    "product": "Più a meno Tofu naturale bio 250 g"
+   },
+   "gig": {
+    "price": 3.29,
+    "pack": 250,
+    "product": "Valsoia Tofu naturale 2x125 g"
+   }
+  },
+  "pollo": {
+   "pam": {
+    "price": 5.28,
+    "pack": 400,
+    "product": "PAM Petto di pollo a fette 400 g"
+   },
+   "gig": {
+    "price": 7.49,
+    "pack": 400,
+    "product": "Amadori Petto di pollo a fette 400 g (regular 18,73 €/kg)"
+   }
+  },
+  "macinato": {
+   "pam": {
+    "price": 4.47,
+    "pack": 300,
+    "product": "Carne Fresca Macinato scelto bovino adulto 300 g"
+   },
+   "gig": {
+    "price": 8.4,
+    "pack": 350,
+    "product": "Macinata scelta di bovino adulto 350 g"
+   }
+  },
+  "salsiccia": {
+   "pam": {
+    "price": 5.49,
+    "pack": 450,
+    "product": "PAM Salsiccia di suino 450 g"
+   },
+   "gig": {
+    "price": 5.45,
+    "pack": 500,
+    "product": "Salsiccia di suino dolce, sold by weight (10,90 €/kg), ~500 g"
+   }
+  },
+  "guanciale": {
+   "pam": {
+    "price": 1.69,
+    "pack": 100,
+    "product": "Lanzi Guanciale di Norcia 100 g"
+   },
+   "gig": {
+    "price": 3.89,
+    "pack": 250,
+    "product": "Salumi Pasini Guanciale 250 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 1.79,
+     "pack": 100,
+     "product": "Gardani Guanciale stagionato 100 g"
+    },
+    "gig": {
+     "price": 1.99,
+     "pack": 90,
+     "product": "Citterio Tagliette di guanciale 90 g"
+    }
+   }
+  },
+  "merluzzo": {
+   "pam": {
+    "price": 8.85,
+    "pack": 360,
+    "product": "Findus Filetti di merluzzo surgelati 360 g"
+   },
+   "gig": {
+    "price": 8.49,
+    "pack": 360,
+    "product": "Capitan Findus Filetti di merluzzo 360 g"
+   }
+  },
+  "salmone": {
+   "pam": {
+    "price": 5.97,
+    "pack": 300,
+    "product": "Salmone 300 g"
+   },
+   "gig": {
+    "price": 11.44,
+    "pack": 400,
+    "product": "Salmone a fette, sold by weight (28,60 €/kg), ~400 g"
+   }
+  },
+  "pomodorini": {
+   "pam": {
+    "price": 3.49,
+    "pack": 500,
+    "product": "Pomodoro ciliegino fresco 500 g"
+   },
+   "gig": {
+    "price": 1.15,
+    "pack": 400,
+    "product": "IL GIGANTE Pomodorini 400 g (tinned, not fresh)"
+   }
+  },
+  "zucchine": {
+   "pam": {
+    "price": 1.69,
+    "pack": 500,
+    "product": "Zucchine 500 g"
+   },
+   "gig": {
+    "price": 1.34,
+    "pack": 750,
+    "product": "Zucchine, sold by weight (1,78 €/kg), ~750 g"
+   }
+  },
+  "melanzane": {
+   "pam": {
+    "price": 1.99,
+    "pack": 740,
+    "product": "Verdura fresca Melanzane tonde 740 g"
+   },
+   "gig": {
+    "price": 4.18,
+    "pack": 1200,
+    "product": "Melanzane viola, sold by weight (3,48 €/kg), ~1,2 kg"
+   }
+  },
+  "peperoni": {
+   "pam": {
+    "price": 2.21,
+    "pack": 600,
+    "product": "Verdura fresca Peperoni rossi 600 g"
+   },
+   "gig": {
+    "price": 2.84,
+    "pack": 750,
+    "product": "Peperoni rossi, sold by weight (3,78 €/kg), ~750 g"
+   }
+  },
+  "cipolle": {
+   "pam": {
+    "price": 0.99,
+    "pack": 500,
+    "product": "PAM Cipolle dorate 500 g"
+   },
+   "gig": {
+    "price": 1.28,
+    "pack": 800,
+    "product": "Cipolle dorate in rete (1,60 €/kg), ~800 g"
+   }
+  },
+  "aglio": {
+   "pam": {
+    "price": 0.99,
+    "pack": 80,
+    "product": "Aglio bianco 80 g"
+   },
+   "gig": {
+    "price": 1.58,
+    "pack": 150,
+    "product": "Aglio bianco DOP 150 g"
+   }
+  },
+  "carote": {
+   "pam": {
+    "price": 0.99,
+    "pack": 700,
+    "product": "PAM Carote 700 g"
+   },
+   "gig": {
+    "price": 1.78,
+    "pack": 1200,
+    "product": "Carote, sold by weight (1,48 €/kg), ~1,2 kg"
+   }
+  },
+  "patate": {
+   "pam": {
+    "price": 2.58,
+    "pack": 2000,
+    "product": "PAM Patate tutti usi 2 kg"
+   },
+   "gig": {
+    "price": 2.98,
+    "pack": 1500,
+    "product": "IL GIGANTE Patate per tutti gli usi 1,5 kg"
+   }
+  },
+  "spinaci": {
+   "pam": {
+    "price": 2.19,
+    "pack": 1000,
+    "product": "PAM Spinaci a cubetti surgelati 1 kg"
+   },
+   "gig": {
+    "price": 1.29,
+    "pack": 450,
+    "product": "IL GIGANTE Spinaci foglia su foglia surgelati 450 g"
+   },
+   "brand": {
+    "gig": {
+     "price": 3.45,
+     "pack": 900,
+     "product": "Orogel Cubello Spinaci foglia più 900 g"
+    }
+   }
+  },
+  "broccoli": {
+   "pam": {
+    "price": 1.99,
+    "pack": 450,
+    "product": "PAM Broccoli a rosette surgelati 450 g"
+   },
+   "gig": {
+    "price": 1.99,
+    "pack": 450,
+    "product": "IL GIGANTE Broccoli a rosette surgelati 450 g"
+   }
+  },
+  "funghi": {
+   "pam": {
+    "price": 1.19,
+    "pack": 380,
+    "product": "Iposea Funghi champignon tagliati al naturale 380 g"
+   },
+   "gig": {
+    "price": 1.5,
+    "pack": 400,
+    "product": "Scelta Oro Funghi champignon al naturale tagliati 400 g"
+   }
+  },
+  "insalata": {
+   "gig": {
+    "price": 1.38,
+    "pack": 300,
+    "product": "IL GIGANTE Insalata mista 300 g"
+   }
+  },
+  "piselli": {
+   "pam": {
+    "price": 1.29,
+    "pack": 450,
+    "product": "PAM Piselli finissimi surgelati 450 g"
+   },
+   "gig": {
+    "price": 1.39,
+    "pack": 450,
+    "product": "IL GIGANTE Piselli finissimi surgelati 450 g"
+   },
+   "brand": {
+    "pam": {
+     "price": 3.59,
+     "pack": 450,
+     "product": "Findus Piselli novelli 450 g"
+    },
+    "gig": {
+     "price": 4.59,
+     "pack": 850,
+     "product": "FRoSTA Finissimi piselli piccoli e teneri 850 g",
+     "blu": 2.75
+    }
+   }
+  },
+  "basilico": {
+   "pam": {
+    "price": 0.99,
+    "pack": 1,
+    "product": "PAM Basilico (pianta)"
+   },
+   "gig": {
+    "price": 1.28,
+    "pack": 1,
+    "product": "Basilico (pianta)"
+   }
+  },
+  "limoni": {
+   "pam": {
+    "price": 1.29,
+    "pack": 500,
+    "product": "Limoni 500 g"
+   },
+   "gig": {
+    "price": 1.34,
+    "pack": 500,
+    "product": "Limoni sold by weight (2,68 €/kg), 500 g"
+   }
+  }
+ }
+}
