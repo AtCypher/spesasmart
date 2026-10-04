@@ -76,3 +76,20 @@ button,.chip,.btn,nav a,.stepper b,.sw{-webkit-user-select:none;user-select:none
 
 .sl{padding:4px 0 2px}.slv{text-align:center;font-size:24px;font-weight:700;margin-bottom:6px}
 .sl input[type=range]{width:100%;height:36px;accent-color:var(--acc);touch-action:pan-y;margin:0}
+
+/* accent themes (green is the original and needs no override) */
+:root[data-accent=blue]{--acc:#1e3a8a;--acc-ink:#ffffff;--bg:#f1f4fa;--chip:#e4e9f4;--line:#d9e0ee;--mute:#5d6b85}
+:root[data-accent=orange]{--acc:#d9480f;--acc-ink:#ffffff;--bg:#fbf3ec;--chip:#f4e6d8;--line:#ead9c8;--mute:#7d6a58}
+:root[data-accent=purple]{--acc:#6d28d9;--acc-ink:#ffffff;--bg:#f5f1fb;--chip:#e9e1f5;--line:#ded3ee;--mute:#6a5f80}
+:root[data-accent=rose]{--acc:#be185d;--acc-ink:#ffffff;--bg:#fbf1f5;--chip:#f4e1ea;--line:#ecd3df;--mute:#7d5f6c}
+@media (prefers-color-scheme:dark){:root[data-accent=blue]:not([data-theme=light]){--acc:#7aa2ff;--acc-ink:#06122e;--bg:#0e1424;--card:#172036;--chip:#212c47;--line:#2a3656;--mute:#9aa6c0}}
+:root[data-accent=blue][data-theme=dark]{--acc:#7aa2ff;--acc-ink:#06122e;--bg:#0e1424;--card:#172036;--chip:#212c47;--line:#2a3656;--mute:#9aa6c0}
+@media (prefers-color-scheme:dark){:root[data-accent=orange]:not([data-theme=light]){--acc:#ff9a4d;--acc-ink:#1f0e00;--bg:#1a120c;--card:#251a12;--chip:#33241a;--line:#3d2c20;--mute:#b9a493}}
+:root[data-accent=orange][data-theme=dark]{--acc:#ff9a4d;--acc-ink:#1f0e00;--bg:#1a120c;--card:#251a12;--chip:#33241a;--line:#3d2c20;--mute:#b9a493}
+@media (prefers-color-scheme:dark){:root[data-accent=purple]:not([data-theme=light]){--acc:#b794ff;--acc-ink:#170a33;--bg:#130f1c;--card:#1d1729;--chip:#2a2139;--line:#342a47;--mute:#a99fc0}}
+:root[data-accent=purple][data-theme=dark]{--acc:#b794ff;--acc-ink:#170a33;--bg:#130f1c;--card:#1d1729;--chip:#2a2139;--line:#342a47;--mute:#a99fc0}
+@media (prefers-color-scheme:dark){:root[data-accent=rose]:not([data-theme=light]){--acc:#ff7aa8;--acc-ink:#2b0616;--bg:#1a0f14;--card:#251720;--chip:#33202b;--line:#3f2a35;--mute:#bb9fac}}
+:root[data-accent=rose][data-theme=dark]{--acc:#ff7aa8;--acc-ink:#2b0616;--bg:#1a0f14;--card:#251720;--chip:#33202b;--line:#3f2a35;--mute:#bb9fac}
+:root[data-accent] .badge.g{background:var(--chip);color:var(--acc)}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px;border:1px solid rgba(0,0,0,.15)}
+.chip.on .dot{border:2px solid #fff}

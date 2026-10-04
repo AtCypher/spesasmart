@@ -24,7 +24,7 @@
     get(k, d) { try { const v = localStorage.getItem('ss.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem('ss.' + k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
   };
-  let settings = Object.assign({ budget: 60, people: 2, dinners: 7, filters: { veg: false, protein: false, fast: false }, mode: 'mix', pantry: true, theme: 'system', blu: false, brandAll: false, listView: 'store', hideTicked: false, wake: false, planInput: 'buttons' }, store.get('settings', {}));
+  let settings = Object.assign({ budget: 60, people: 2, dinners: 7, filters: { veg: false, protein: false, fast: false }, mode: 'mix', pantry: true, theme: 'system', blu: false, brandAll: false, listView: 'store', hideTicked: false, wake: false, planInput: 'buttons', accent: 'green' }, store.get('settings', {}));
   if (settings.diet === 'veg') settings.filters = Object.assign({}, settings.filters, { veg: true });
   delete settings.diet;
   settings.filters = Object.assign({ veg: false, protein: false, fast: false }, settings.filters);
@@ -36,12 +36,15 @@
   let checks = store.get('checks', {});
   const save = () => { store.set('settings', settings); store.set('prices', overrides); store.set('plan', plan); store.set('options', options); store.set('checks', checks); };
 
+  const ACCENTS = { green: ['Green (original)', '#1f8a5b'], blue: ['Dark blue', '#1e3a8a'], orange: ['Orange', '#d9480f'], purple: ['Purple', '#6d28d9'], rose: ['Rose', '#be185d'] };
   function applyTheme() {
     const r = document.documentElement;
     if (settings.theme === 'system') r.removeAttribute('data-theme'); else r.setAttribute('data-theme', settings.theme);
+    if (!ACCENTS[settings.accent] || settings.accent === 'green') r.removeAttribute('data-accent'); else r.setAttribute('data-accent', settings.accent);
     const m = document.querySelector('meta[name=theme-color]');
     const dark = settings.theme === 'dark' || (settings.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
-    if (m) m.content = dark ? '#121714' : '#1f8a5b';
+    const cs = getComputedStyle(r);
+    if (m) m.content = (cs.getPropertyValue(dark ? '--bg' : '--acc') || (dark ? '#121714' : '#1f8a5b')).trim();
   }
   applyTheme();
 
@@ -429,7 +432,8 @@
 
   function viewSettings() {
     setHead('Settings', false);
-    app.innerHTML = `<div class="card"><h3>Appearance</h3>${chips('theme', [['system', 'Automatic'], ['light', 'Light'], ['dark', 'Dark']], settings.theme)}</div>
+    app.innerHTML = `<div class="card"><h3>Appearance</h3>${chips('theme', [['system', 'Automatic'], ['light', 'Light'], ['dark', 'Dark']], settings.theme)}
+      <div class="mute small" style="margin:12px 0 6px">Colour</div>${chips('accent', Object.keys(ACCENTS).map((k) => [k, `<span class="dot" style="background:${ACCENTS[k][1]}"></span>${ACCENTS[k][0]}`]), settings.accent)}</div>
       <div class="card"><h3>Plan my week controls</h3><div class="mute small" style="margin-bottom:8px">How you set budget, people and dinners on the Plan tab.</div>${chips('planInput', [['buttons', '+ / − buttons'], ['sliders', 'Sliders']], settings.planInput)}</div>
       <div class="card"><h3>Il Gigante Blu Card</h3><div class="mute small" style="margin-bottom:8px">Use Blu Card prices at Il Gigante wherever a card price is known. Card prices are only shown where they have been checked, otherwise the normal price is used.</div>${chips('blu', [['false', 'I don\'t have it'], ['true', 'I have a Blu Card']], String(settings.blu))}</div>
       <div class="card"><h3>Price data</h3><div class="mute small">${priceMeta.updated ? 'Last checked ' + esc(priceMeta.updated) + ' (Pam ' + priceMeta.ver.pam + ', Il Gigante ' + priceMeta.ver.gig + ' items; ' + priceMeta.brandItems + ' items with a name-brand option).' : 'All prices are estimates until checked.'} ${priceMeta.blu ? esc(priceMeta.blu) : ''} See the Prices tab to correct items.</div></div>
@@ -498,7 +502,7 @@
       settings[d.set] = v;
       if (d.set === 'brandAll' && plan) plan.items = {};
       save();
-      if (d.set === 'theme') applyTheme();
+      if (d.set === 'theme' || d.set === 'accent') applyTheme();
       if (d.set === 'wake') applyWake();
       if (d.set === 'brandAll' && location.hash.startsWith('#/options')) { options = generate(); save(); }
       rerender();
