@@ -416,7 +416,7 @@
     const status = priceMeta.updated
       ? `Checked against the shops on <b>${esc(priceMeta.updated)}</b>: Pam <b>${priceMeta.ver.pam}</b>/${total}, Il Gigante <b>${priceMeta.ver.gig}</b>/${total} items. Unchecked ones are estimates. Regular shelf prices, promos excluded. Pam: ${esc((priceMeta.where || {}).pam || '')}. Il Gigante: ${esc((priceMeta.where || {}).gig || '')}.`
       : 'No prices have been checked against the shops yet: <b>all values are estimates</b>.';
-    app.innerHTML = `<div class="notice">${status} ${edited ? '<b>' + edited + ' edited by you.</b>' : ''} Type the real shelf price (per pack) to correct any store-brand item.</div>
+    app.innerHTML = `<div class="notice">${status} ${edited ? '<b>' + edited + ' edited by you.</b>' : ''} Type the real shelf price (per pack) to correct any store-brand item. The <b>Blu Card €</b> column equals the Il Gigante price unless a card discount was found; card deals on name-brand products are highlighted under the item.</div>
       <input type="search" id="q" placeholder="Search items" value="${esc(viewPrices.q || '')}">
       <div class="card" style="margin-top:12px">` +
       list.map((i) => {
@@ -425,9 +425,12 @@
         const tag = `<span class="badge ${i.ver.pam ? 'g' : 'e'}">Pam ${i.ver.pam ? 'checked' : 'estimate'}</span><span class="badge ${i.ver.gig ? 'g' : 'e'}">Gigante ${i.ver.gig ? 'checked' : 'estimate'}</span>`;
         const prods = (i.prod.pam || i.prod.gig) ? `<div class="mute small">Store brand · ${i.prod.pam ? 'Pam: ' + esc(i.prod.pam) : ''}${i.prod.pam && i.prod.gig ? ' · ' : ''}${i.prod.gig ? 'Il Gigante: ' + esc(i.prod.gig) : ''}</div>` : '';
         const bl = i.brand ? `<div class="mute small">Name brand · ${['pam', 'gig'].filter((s) => i.brand[s]).map((s) => STORES[s] + ': ' + esc(i.brand[s].product) + ' ' + eur(i.brand[s].price) + (i.brand[s].blu != null ? ' (Blu Card ' + eur(i.brand[s].blu) + ')' : '')).join(' · ')}</div>` : '';
-        const f = (k, lab, v, ed) => `<div><label>${lab}</label><input inputmode="decimal" class="${ed ? 'ed' : ''}" data-p="${i.id}:${k}" value="${v == null ? '' : v.toFixed(2)}" placeholder="–"></div>`;
+        const f = (k, lab, v, ed, cls) => `<div><label>${lab}</label><input inputmode="decimal" class="${ed ? 'ed' : ''} ${cls || ''}" data-p="${i.id}:${k}" value="${v == null ? '' : v.toFixed(2)}" placeholder="–"></div>`;
+        const gigPrice = o.gig != null ? o.gig : i.gig;
+        const bluVal = o.blu != null ? o.blu : (i.blu != null && i.blu < gigPrice ? i.blu : gigPrice); // Blu Card price: the regular price unless a card discount is known
+        const bluDeal = i.brand && i.brand.gig && i.brand.gig.blu != null ? `<div class="small bludeal">💳 Blu Card deal: ${eur(i.brand.gig.blu)} on ${esc(i.brand.gig.product)} (regular ${eur(i.brand.gig.price)}, −${Math.round((1 - i.brand.gig.blu / i.brand.gig.price) * 100)}%)</div>` : '';
         return `<div class="pi"><div class="h"><b>${esc(i.name)}</b> <span class="mute small">per pack</span> ${tag} <a class="small" href="${link}" target="_blank" rel="noopener">check online</a>${prods}${bl}</div>
-          ${f('pam', 'Pam €', o.pam != null ? o.pam : i.pam, o.pam != null)}${f('gig', 'Gigante €', o.gig != null ? o.gig : i.gig, o.gig != null)}${f('blu', 'Blu Card €', bluOf(i.id), o.blu != null)}</div>`;
+          ${f('pam', 'Pam €', o.pam != null ? o.pam : i.pam, o.pam != null)}${f('gig', 'Gigante €', o.gig != null ? o.gig : i.gig, o.gig != null)}${f('blu', 'Blu Card €', bluVal, o.blu != null, o.blu == null && bluVal === gigPrice ? 'same' : '')}${bluDeal ? '<div class="h">' + bluDeal + '</div>' : ''}</div>`;
       }).join('') + `</div>
       <div class="card"><h3>Backup / restore my edits</h3><textarea id="json" placeholder="Export fills this box. Paste a backup here and tap Import."></textarea>
       <button class="btn sec" id="exp">Export my prices</button><button class="btn sec" id="imp">Import</button><button class="btn sec" id="reset">Remove my edits</button></div>`;
