@@ -24,7 +24,7 @@
     get(k, d) { try { const v = localStorage.getItem('ss.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem('ss.' + k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
   };
-  let settings = Object.assign({ budget: 60, people: 2, dinners: 7, filters: { veg: false, protein: false, fast: false }, mode: 'mix', pantry: true, theme: 'system', blu: false, brandAll: false, listView: 'store', hideTicked: false, wake: false }, store.get('settings', {}));
+  let settings = Object.assign({ budget: 60, people: 2, dinners: 7, filters: { veg: false, protein: false, fast: false }, mode: 'mix', pantry: true, theme: 'system', blu: false, brandAll: false, listView: 'store', hideTicked: false, wake: false, planInput: 'buttons' }, store.get('settings', {}));
   if (settings.diet === 'veg') settings.filters = Object.assign({}, settings.filters, { veg: true });
   delete settings.diet;
   settings.filters = Object.assign({ veg: false, protein: false, fast: false }, settings.filters);
@@ -216,6 +216,13 @@
   const chips = (name, opts, cur) => '<div class="chips">' + opts.map(([v, l]) => `<button class="chip${String(cur) === String(v) ? ' on' : ''}" data-set="${name}" data-v="${v}">${l}</button>`).join('') + '</div>';
   const multi = (attr, opts, cur) => '<div class="chips">' + opts.map(([v, l]) => `<button class="chip${cur[v] ? ' on' : ''}" data-${attr}="${v}">${l}</button>`).join('') + '</div>';
   const stepper = (name, v, label, step) => `<div class="stepper"><button data-step="${name}" data-d="-${step}">−</button><b>${label}</b><button data-step="${name}" data-d="${step}">+</button></div>`;
+  const SLIDER = { budget: [10, 250, 5], people: [1, 8, 1], dinners: [1, 7, 1] };
+  const slider = (name, v, label) => {
+    const [mn, mx, st] = SLIDER[name];
+    return `<div class="sl"><div class="slv" id="slv-${name}">${label}</div><input type="range" data-slider="${name}" min="${mn}" max="${Math.max(mx, v)}" step="${st}" value="${v}"></div>`;
+  };
+  // Plan-tab number control: buttons (+/−) or a slider, chosen in Settings.
+  const control = (name, v, label, step) => (settings.planInput === 'sliders' ? slider(name, v, label) : stepper(name, v, label, step));
   const disclaimer = () => priceMeta.updated
     ? `<div class="notice">Prices checked by hand on <b>${esc(priceMeta.updated)}</b> (regular shelf prices, no promos). They change, ask for an update each week. Unchecked items are estimates.</div>`
     : '<div class="notice">Prices are <b>estimates</b>, not live shelf prices. Edit them in the Prices tab.</div>';
@@ -229,9 +236,9 @@
     const n = eligible().length;
     app.innerHTML = cur + `<div class="card">
       <h2>Plan my week</h2>
-      <label class="f">Weekly budget</label>${stepper('budget', settings.budget, eur(settings.budget).replace(',00', ''), 5)}
-      <label class="f">People</label>${stepper('people', settings.people, settings.people, 1)}
-      <label class="f">Dinners to plan</label>${stepper('dinners', settings.dinners, settings.dinners, 1)}
+      <label class="f">Weekly budget</label>${control('budget', settings.budget, eur(settings.budget).replace(',00', ''), 5)}
+      <label class="f">People</label>${control('people', settings.people, settings.people, 1)}
+      <label class="f">Dinners to plan</label>${control('dinners', settings.dinners, settings.dinners, 1)}
       <label class="f">Diet & goals <span class="mute small">(combine freely)</span></label>${multi('filter', [['veg', '🌱 Vegetarian'], ['protein', '💪 High protein'], ['fast', '⚡ Fast (&lt;25 min)']], settings.filters)}
       <div class="mute small" style="margin-top:6px">${n} of ${RECIPES.length} meals match${n < settings.dinners ? ` <b class="over-t">(fewer than the ${settings.dinners} dinners you asked for)</b>` : ''}. High protein = about ${PROTEIN_MIN} g or more per serving (approximate, from typical nutrition values).</div>
       <label class="f">Products</label>${chips('brandAll', [['false', 'Store brand'], ['true', 'Name brand']], String(settings.brandAll))}
@@ -423,6 +430,7 @@
   function viewSettings() {
     setHead('Settings', false);
     app.innerHTML = `<div class="card"><h3>Appearance</h3>${chips('theme', [['system', 'Automatic'], ['light', 'Light'], ['dark', 'Dark']], settings.theme)}</div>
+      <div class="card"><h3>Plan my week controls</h3><div class="mute small" style="margin-bottom:8px">How you set budget, people and dinners on the Plan tab.</div>${chips('planInput', [['buttons', '+ / − buttons'], ['sliders', 'Sliders']], settings.planInput)}</div>
       <div class="card"><h3>Il Gigante Blu Card</h3><div class="mute small" style="margin-bottom:8px">Use Blu Card prices at Il Gigante wherever a card price is known. Card prices are only shown where they have been checked, otherwise the normal price is used.</div>${chips('blu', [['false', 'I don\'t have it'], ['true', 'I have a Blu Card']], String(settings.blu))}</div>
       <div class="card"><h3>Price data</h3><div class="mute small">${priceMeta.updated ? 'Last checked ' + esc(priceMeta.updated) + ' (Pam ' + priceMeta.ver.pam + ', Il Gigante ' + priceMeta.ver.gig + ' items; ' + priceMeta.brandItems + ' items with a name-brand option).' : 'All prices are estimates until checked.'} ${priceMeta.blu ? esc(priceMeta.blu) : ''} See the Prices tab to correct items.</div></div>
       <div class="card"><h3>Reset</h3><button class="btn sec" id="wipe">Delete my plan, ticks and edits</button></div>
@@ -540,6 +548,15 @@
       save();
     }
   });
+  document.addEventListener('input', (e) => {
+    const c = e.target;
+    if (!c.dataset || !c.dataset.slider) return;
+    const n = c.dataset.slider; const v = Number(c.value);
+    settings[n] = v;
+    const lab = $('#slv-' + n);
+    if (lab) lab.textContent = n === 'budget' ? eur(v).replace(',00', '') : v;
+  });
+  document.addEventListener('change', (e) => { if (e.target.dataset && e.target.dataset.slider) { save(); rerender(); } });
   window.addEventListener('hashchange', route);
   route();
   loadPrices().then(() => { if (/#\/(prices|settings|list|week|options|plan|meals)?$/.test(location.hash) || !location.hash) rerender(); });
