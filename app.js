@@ -30,6 +30,7 @@
   settings.filters = Object.assign({ veg: false, protein: false, fast: false }, settings.filters);
   let overrides = store.get('prices', {}); // {id:{pam,gig,blu}} edits apply to the store-brand tier
   let plan = store.get('plan', null); // {ids:[...], brand:[ids using name brand]}
+  if (plan) { plan.ids = (plan.ids || []).filter((id) => RECIPE[id]); if (!plan.ids.length) plan = null; }
   if (plan && !plan.brand) plan.brand = [];
   if (plan && !plan.items) plan.items = {}; // per-product tier overrides {itemId: 'brand'|'store'}
   let options = store.get('options', null);
@@ -57,6 +58,14 @@
     return reg;
   };
   const packOf = (id, st) => ITEMS[id].packs[st];
+  const isVer = (iid, st) => ITEMS[iid].ver[st] || !!(overrides[iid] && overrides[iid][st] != null);
+  // Which stores may supply this item: a real brand product if one exists, and a checked price beats an unchecked estimate.
+  function storesFor(iid, tier, mode) {
+    const cand = mode === 'mix' ? ['pam', 'gig'] : [mode];
+    if (tier === 'brand') { const wb = cand.filter((st) => ITEMS[iid].brand && ITEMS[iid].brand[st]); if (wb.length) return wb; }
+    const v = cand.filter((st) => isVer(iid, st));
+    return v.length && v.length < cand.length ? v : cand;
+  }
   const hasBrand = (iid) => !!(ITEMS[iid].brand && (ITEMS[iid].brand.pam || ITEMS[iid].brand.gig));
   // One purchasable offer for an item at a store in a tier ('store' or 'brand'). Falls back to the store tier if no brand product is known there.
   function offer(iid, st, tier) {
@@ -86,7 +95,15 @@
         if (j.items[id].brand) { ITEMS[id].brand = j.items[id].brand; brandItems++; }
         ITEMS[id].date = j.updated;
       });
+      // An unchecked store gets the checked store's price as its estimate, so an estimate can never undercut a real price.
+      Object.keys(ITEMS).forEach((id) => {
+        const it = ITEMS[id];
+        [['pam', 'gig'], ['gig', 'pam']].forEach(([ok, other]) => { if (it.ver[ok] && !it.ver[other]) { it[other] = it[ok]; it.packs[other] = it.packs[ok]; } });
+      });
       priceMeta = { updated: j.updated || null, ver, where: j.where || null, blu: j.blu || null, rule: j.rule || null, brandItems };
+      let pruned = 0;
+      Object.keys(overrides).forEach((id) => { const o = overrides[id]; if (o && o.since && priceMeta.updated && o.since < priceMeta.updated) { delete overrides[id]; pruned++; } });
+      if (pruned) { save(); setTimeout(() => toast(pruned + ' of your price edits were replaced by newer shop prices'), 600); }
     }).catch(() => {});
   }
 
@@ -105,7 +122,13 @@
     return tierFn(rid) === 'brand' ? 'brand' : 'store';
   }
   // Builds the shopping basket: one line per (item, tier), store chosen per mode, whole packs.
+  // 'mix' is always the cheapest of: mixing stores, only Pam, only Il Gigante (so "cheapest mix" is never beaten by a single store).
   function basket(ids, mode, tierFn) {
+    const mix = basketCore(ids, mode, tierFn);
+    if (mode !== 'mix') return mix;
+    return ['pam', 'gig'].reduce((best, st) => { const b = basketCore(ids, st, tierFn); return b.total < best.total - 1e-9 ? b : best; }, mix);
+  }
+  function basketCore(ids, mode, tierFn) {
     tierFn = tierFn || defaultTier;
     const m = {};
     ids.forEach((rid) => RECIPE[rid].ing.forEach(([iid, q]) => {
@@ -117,15 +140,13 @@
     }));
     const lines = Object.keys(m).map((k) => {
       const e = m[k]; let best = null;
-      let cand = mode === 'mix' ? ['pam', 'gig'] : [mode];
-      if (e.tier === 'brand') { const withBrand = cand.filter((st) => ITEMS[e.iid].brand && ITEMS[e.iid].brand[st]); if (withBrand.length) cand = withBrand; }
-      cand.forEach((st) => {
+      storesFor(e.iid, e.tier, mode).forEach((st) => {
         const o = offer(e.iid, st, e.tier);
         const packs = Math.max(1, Math.ceil(e.qty / o.pack - 1e-9));
         const total = packs * o.price;
         if (!best || total < best.total - 1e-9) best = { st, o, packs, total };
       });
-      return { key: best.st + ':' + e.iid + ':' + e.tier, k, iid: e.iid, tier: e.tier, qty: e.qty, meals: e.meals, store: best.st, packs: best.packs, pack: best.o.pack, unit: best.o.price, total: best.total, product: best.o.product, brand: best.o.brand, blu: best.o.blu };
+      return { key: e.iid + ':' + e.tier, k, iid: e.iid, tier: e.tier, qty: e.qty, meals: e.meals, store: best.st, packs: best.packs, pack: best.o.pack, unit: best.o.price, total: best.total, product: best.o.product, brand: best.o.brand, blu: best.o.blu };
     });
     return { lines, total: lines.reduce((a, l) => a + l.total, 0) };
   }
@@ -135,10 +156,11 @@
       if (settings.pantry && ITEMS[iid].staple) return a;
       const t = tier === 'brand' && hasBrand(iid) ? 'brand' : 'store';
       const u = (st) => { const o = offer(iid, st, t); return o.price / o.pack; };
-      return a + q * Math.min(u('pam'), u('gig'));
+      return a + q * Math.min.apply(null, storesFor(iid, t, 'mix').map(u));
     }, 0);
   }
-  const recipeHasBrand = (r) => r.ing.some(([iid]) => hasBrand(iid) && !(settings.pantry && ITEMS[iid].staple));
+  const hasBrandIn = (iid) => (settings.mode === 'mix' ? hasBrand(iid) : !!(ITEMS[iid].brand && ITEMS[iid].brand[settings.mode]));
+  const recipeHasBrand = (r) => r.ing.some(([iid]) => hasBrandIn(iid) && !(settings.pantry && ITEMS[iid].staple));
 
   // Per-meal name-brand toggle button (shows the extra cost for that meal). Used in the week view and the shopping list.
   function brandBtn(id, cost) {
@@ -152,7 +174,7 @@
 
   // Per-product name-brand toggle for a shopping-list line (applies to every meal that uses the item).
   function itemBtn(iid, tier, cost) {
-    if (!hasBrand(iid)) return '';
+    if (!hasBrandIn(iid)) return '';
     const to = tier === 'brand' ? 'store' : 'brand';
     const had = plan.items[iid];
     plan.items[iid] = to;
@@ -218,16 +240,16 @@
   $('#sheet').addEventListener('click', (e) => { if (e.target.id === 'sheet') closeSheet(); });
   const chips = (name, opts, cur) => '<div class="chips">' + opts.map(([v, l]) => `<button class="chip${String(cur) === String(v) ? ' on' : ''}" data-set="${name}" data-v="${v}">${l}</button>`).join('') + '</div>';
   const multi = (attr, opts, cur) => '<div class="chips">' + opts.map(([v, l]) => `<button class="chip${cur[v] ? ' on' : ''}" data-${attr}="${v}">${l}</button>`).join('') + '</div>';
-  const stepper = (name, v, label, step) => `<div class="stepper"><button data-step="${name}" data-d="-${step}">−</button><b>${label}</b><button data-step="${name}" data-d="${step}">+</button></div>`;
+  const stepper = (name, v, label, step) => `<div class="stepper"><button data-step="${name}" data-d="-${step}" aria-label="Decrease ${name}">−</button><b>${label}</b><button data-step="${name}" data-d="${step}" aria-label="Increase ${name}">+</button></div>`;
   const SLIDER = { budget: [10, 250, 5], people: [1, 8, 1], dinners: [1, 7, 1] };
   const slider = (name, v, label) => {
     const [mn, mx, st] = SLIDER[name];
-    return `<div class="sl"><div class="slv" id="slv-${name}">${label}</div><input type="range" data-slider="${name}" min="${mn}" max="${Math.max(mx, v)}" step="${st}" value="${v}"></div>`;
+    return `<div class="sl"><div class="slv" id="slv-${name}">${label}</div><input type="range" aria-label="${name}" data-slider="${name}" min="${mn}" max="${Math.max(mx, v)}" step="${st}" value="${v}"></div>`;
   };
   // Plan-tab number control: buttons (+/−) or a slider, chosen in Settings.
   const control = (name, v, label, step) => (settings.planInput === 'sliders' ? slider(name, v, label) : stepper(name, v, label, step));
   const disclaimer = () => priceMeta.updated
-    ? `<div class="notice">Prices checked by hand on <b>${esc(priceMeta.updated)}</b> (regular shelf prices, no promos). They change, ask for an update each week. Unchecked items are estimates.</div>`
+    ? `<div class="notice">Prices checked by hand on <b>${esc(priceMeta.updated)}</b> (regular shelf prices, no promos). They are refreshed automatically every Wednesday and Sunday. Unchecked items are estimates.</div>`
     : '<div class="notice">Prices are <b>estimates</b>, not live shelf prices. Edit them in the Prices tab.</div>';
   const protBadge = (r) => `<span class="badge${r.prot >= PROTEIN_MIN ? ' g' : ''}">≈${Math.round(r.prot)} g protein</span>`;
   const timeBadge = (r) => `<span class="badge${r.min < FAST_MAX ? ' g' : ''}">${r.min} min</span>`;
@@ -322,7 +344,7 @@
     const it = ITEMS[l.iid]; const done = !!checks[l.key];
     const badges = (l.brand ? '<span class="badge">★ brand</span>' : '') + (l.blu ? '<span class="badge g">Blu Card</span>' : '');
     const forMeals = showMeals ? `<div class="mute small">for ${l.meals.map((m) => esc(RECIPE[m].name)).join(', ')}</div>` : '';
-    return `<div class="liw"><label class="li${done ? ' done' : ''}"><input type="checkbox" data-chk="${l.key}" ${done ? 'checked' : ''}><span class="n">${esc(it.name)} ${badges}<div class="mute small">${l.packs} × ${l.pack} ${it.unit}${l.product ? ' · ' + esc(l.product) : ''}</div><div class="mute small">need ${Math.round(l.qty * 10) / 10} ${it.unit}</div>${forMeals}</span><span class="p">${eur(l.total)}</span></label>${hasBrand(l.iid) && !done ? '<div class="lb">' + itemBtn(l.iid, l.tier, curCost) + '</div>' : ''}</div>`;
+    return `<div class="liw"><label class="li${done ? ' done' : ''}"><input type="checkbox" data-chk="${l.key}" ${done ? 'checked' : ''}><span class="n">${esc(it.name)} ${badges}<div class="mute small">${l.packs} × ${l.pack} ${it.unit}${l.product ? ' · ' + esc(l.product) : ''}</div><div class="mute small">need ${Math.round(l.qty * 10) / 10} ${it.unit}</div>${forMeals}</span><span class="p">${eur(l.total)}</span></label>${hasBrandIn(l.iid) && !done ? '<div class="lb">' + itemBtn(l.iid, l.tier, curCost) + '</div>' : ''}</div>`;
   }
   function viewList() {
     setHead('Shopping list', false);
@@ -356,7 +378,7 @@
         const nd = rows.filter((x) => checks[x.l.key]).length;
         html += `<div class="card"><div class="row"><h3>${DAYS[i]} · ${esc(r.name)}</h3><span class="badge${nd === rows.length ? ' g' : ''}">${nd}/${rows.length}</span></div><div style="margin:4px 0 6px">${brandBtn(rid, cur)}</div>` + (vis.length ? vis.map((x) => {
           const it = ITEMS[x.iid]; const done = !!checks[x.l.key];
-   return `<div class="liw"><label class="li${done ? ' done' : ''}"><input type="checkbox" data-chk="${x.l.key}" ${done ? 'checked' : ''}><span class="n">${esc(it.name)} <span class="badge">${STORES[x.l.store]}</span>${x.l.brand ? '<span class="badge">★ brand</span>' : ''}<div class="mute small">${x.l.product ? esc(x.l.product) + '<br>' : ''}${Math.round(x.q * 10) / 10} ${it.unit} for this meal · buy ${x.l.packs} × ${x.l.pack} ${it.unit}${x.l.meals.length > 1 ? ' (shared with ' + (x.l.meals.length - 1) + ' other)' : ''}</div></span><span class="p">${eur(x.l.total)}</span></label>${hasBrand(x.iid) && !done ? '<div class="lb">' + itemBtn(x.iid, x.l.tier, cur) + '</div>' : ''}</div>`;
+   return `<div class="liw"><label class="li${done ? ' done' : ''}"><input type="checkbox" data-chk="${x.l.key}" ${done ? 'checked' : ''}><span class="n">${esc(it.name)} <span class="badge">${STORES[x.l.store]}</span>${x.l.brand ? '<span class="badge">★ brand</span>' : ''}<div class="mute small">${x.l.product ? esc(x.l.product) + '<br>' : ''}${Math.round(x.q * 10) / 10} ${it.unit} for this meal · buy ${x.l.packs} × ${x.l.pack} ${it.unit}${x.l.meals.length > 1 ? ' (shared with ' + (x.l.meals.length - 1) + ' other)' : ''}</div></span><span class="p">${eur(x.l.total)}</span></label>${hasBrandIn(x.iid) && !done ? '<div class="lb">' + itemBtn(x.iid, x.l.tier, cur) + '</div>' : ''}</div>`;
         }).join('') : '<div class="mute small" style="padding:8px 0">All ingredients ticked ✅</div>') + `<a class="small" href="#/recipe/${rid}">Recipe</a></div>`;
       });
     } else {
@@ -533,7 +555,7 @@
     else if (d.remove !== undefined) { dropFromBrand(plan.ids[Number(d.remove)]); plan.ids.splice(Number(d.remove), 1); if (!plan.ids.length) plan = null; save(); closeSheet(); location.hash = plan ? '#/week' : '#/meals'; rerender(); toast('Meal removed'); }
     else if (t.id === 'wipe') { if (confirm('Delete your plan, ticks and price edits?')) { plan = null; options = null; checks = {}; overrides = {}; save(); rerender(); toast('Cleared'); } }
     else if (t.id === 'clearchk') { checks = {}; save(); rerender(); }
-    else if (t.id === 'exp') { const j = JSON.stringify(overrides); $('#json').value = j; try { navigator.clipboard.writeText(j); toast('Copied'); } catch (x) { toast('Select and copy the text'); } }
+    else if (t.id === 'exp') { const j = JSON.stringify(overrides); $('#json').value = j; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(j).then(() => toast('Copied'), () => toast('Select and copy the text')); else toast('Select and copy the text'); }
     else if (t.id === 'imp') {
       try { const o = JSON.parse($('#json').value); if (typeof o !== 'object' || Array.isArray(o) || o === null) throw 0; overrides = o; save(); rerender(); toast('Imported'); } catch (x) { toast('That is not a valid backup'); }
     } else if (t.id === 'reset') { overrides = {}; save(); rerender(); toast('Prices reset'); }
@@ -543,10 +565,10 @@
     if (c.dataset.chk) { checks[c.dataset.chk] = c.checked; save(); rerender(); }
     else if (c.dataset.p) {
       const [id, s] = c.dataset.p.split(':');
-      if (s === 'blu' && String(c.value).trim() === '') { if (overrides[id]) { delete overrides[id].blu; if (!Object.keys(overrides[id]).length) delete overrides[id]; } options = null; save(); return; }
+      if (s === 'blu' && String(c.value).trim() === '') { if (overrides[id]) { delete overrides[id].blu; if (!['pam', 'gig', 'blu'].some((k) => overrides[id][k] != null)) delete overrides[id]; } options = null; save(); return; }
       const v = parseFloat(String(c.value).replace(',', '.'));
       if (!isFinite(v) || v <= 0 || v > 999) { c.value = (s === 'blu' ? (bluOf(id) || 0) : price(id, s)).toFixed(2); toast('Enter a price like 1,29'); return; }
-      overrides[id] = Object.assign({}, overrides[id], { [s]: Math.round(v * 100) / 100 });
+      overrides[id] = Object.assign({}, overrides[id], { [s]: Math.round(v * 100) / 100, since: priceMeta.updated || '' });
       c.value = v.toFixed(2); c.classList.add('ed');
       options = null; // stale after price changes
       save();
