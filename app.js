@@ -47,7 +47,22 @@
   if (settings.diet === 'veg') settings.filters = Object.assign({}, settings.filters, { veg: true });
   delete settings.diet;
   settings.filters = Object.assign({ veg: false, protein: false, fast: false }, settings.filters);
-  let overrides = store.get('prices', {}); // {id:{pam,gig,blu}} edits apply to the store-brand tier
+  // Keeps only known items and sane prices, so a bad backup (or old stored data) can't turn totals into NaN or break the Prices tab.
+  function cleanOverrides(o) {
+    if (!o || typeof o !== 'object' || Array.isArray(o)) return null;
+    const out = {};
+    Object.keys(o).forEach((id) => {
+      const x = o[id];
+      if (!ITEMS[id] || !x || typeof x !== 'object') return;
+      const e = {};
+      ['pam', 'gig', 'blu'].forEach((k) => { const v = x[k]; if (typeof v === 'number' && isFinite(v) && v > 0 && v <= 999) e[k] = Math.round(v * 100) / 100; });
+      if (!Object.keys(e).length) return;
+      if (typeof x.since === 'string') e.since = x.since;
+      out[id] = e;
+    });
+    return out;
+  }
+  let overrides = cleanOverrides(store.get('prices', {})) || {}; // {id:{pam,gig,blu}} edits apply to the store-brand tier
   let plan = store.get('plan', null); // {ids:[...], brand:[ids using name brand], items:{itemId:'brand'|'store'}}
   if (plan) { plan.ids = (plan.ids || []).filter((id) => RECIPE[id]); if (!plan.ids.length) plan = null; }
   if (plan && !plan.brand) plan.brand = [];
@@ -67,6 +82,8 @@
     if (m) m.content = (cs.getPropertyValue(dark ? '--bg' : '--acc') || (dark ? '#121714' : '#1f8a5b')).trim();
   }
   applyTheme();
+  // "Automatic" follows the phone's light/dark switch while the app is open (the CSS does; the browser bar colour needs this)
+  (function () { const mq = matchMedia('(prefers-color-scheme: dark)'); const f = () => { if (settings.theme === 'system') applyTheme(); }; if (mq.addEventListener) mq.addEventListener('change', f); else if (mq.addListener) mq.addListener(f); })();
   if (DE_ON) {
     document.documentElement.lang = 'de';
     const tabs = { plan: 'Plan', meals: 'Gerichte', list: 'Liste', prices: 'Preise', settings: 'Einstellungen' };
@@ -83,6 +100,13 @@
     if (s === 'gig' && BLU_ON()) { const b = bluOf(id); if (b != null && b < reg) return b; }
     return reg;
   };
+  // The value a Prices-tab field shows: your edit, else the shop price. The Blu Card field falls back to the regular Il Gigante price.
+  function fieldPrice(id, k) {
+    const o = overrides[id] || {};
+    if (k !== 'blu') return o[k] != null ? o[k] : ITEMS[id][k];
+    const g = fieldPrice(id, 'gig'); const b = ITEMS[id].blu;
+    return o.blu != null ? o.blu : b != null && b < g ? b : g;
+  }
   const packOf = (id, st) => ITEMS[id].packs[st];
   const isVer = (iid, st) => ITEMS[iid].ver[st] || !!(overrides[iid] && overrides[iid][st] != null);
   // Which stores may supply this item: a real brand product if one exists, and a checked price beats an unchecked estimate.
@@ -161,8 +185,10 @@
   function showSystemNotice(l, force) {
     const title = D('SpesaSmart: prices updated', 'SpesaSmart: Preise aktualisiert');
     const opts = { body: noticeText(l), icon: 'icon-192.png', tag: 'prices-' + (force ? 'test' : l.at) };
-    if ('serviceWorker' in navigator) navigator.serviceWorker.ready.then((reg) => reg.showNotification(title, opts)).catch(() => { try { new Notification(title, opts); } catch (e) { /* unsupported */ } });
-    else { try { new Notification(title, opts); } catch (e) { /* unsupported */ } }
+    const direct = () => { try { new Notification(title, opts); } catch (e) { /* unsupported */ } };
+    // getRegistration (not .ready, which never settles when no service worker is registered, e.g. over plain http)
+    if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistration().then((reg) => (reg ? reg.showNotification(title, opts) : direct())).catch(direct);
+    else direct();
   }
   const noticeBanner = () => (pendingNotice ? `<div class="card" style="border-color:var(--acc)"><div class="row"><div><b>🔔 ${D('Prices updated', 'Preise aktualisiert')}</b><div class="mute small">${esc(noticeText(pendingNotice))}</div></div><button class="chip on" data-dismissnotice="1">OK</button></div></div>` : '');
   const eur = (n) => '€' + n.toFixed(2).replace('.', ',');
@@ -299,11 +325,12 @@
   $('#sheet').addEventListener('click', (e) => { if (e.target.id === 'sheet') closeSheet(); });
   const chips = (name, opts, cur) => '<div class="chips">' + opts.map(([v, l]) => `<button class="chip${String(cur) === String(v) ? ' on' : ''}" data-set="${name}" data-v="${v}">${l}</button>`).join('') + '</div>';
   const multi = (attr, opts, cur) => '<div class="chips">' + opts.map(([v, l]) => `<button class="chip${cur[v] ? ' on' : ''}" data-${attr}="${v}">${l}</button>`).join('') + '</div>';
-  const stepper = (name, v, label, step) => `<div class="stepper"><button data-step="${name}" data-d="-${step}" aria-label="${D('Decrease', 'Verringern')} ${name}">−</button><b>${label}</b><button data-step="${name}" data-d="${step}" aria-label="${D('Increase', 'Erhöhen')} ${name}">+</button></div>`;
+  const CTRL = { budget: D('budget', 'Budget'), people: D('people', 'Personen'), dinners: D('dinners', 'Abendessen') }; // screen-reader names
+  const stepper = (name, v, label, step) => `<div class="stepper"><button data-step="${name}" data-d="-${step}" aria-label="${D('Decrease', 'Verringern:')} ${CTRL[name]}">−</button><b>${label}</b><button data-step="${name}" data-d="${step}" aria-label="${D('Increase', 'Erhöhen:')} ${CTRL[name]}">+</button></div>`;
   const SLIDER = { budget: [10, 250, 5], people: [1, 8, 1], dinners: [1, 7, 1] };
   const slider = (name, v, label) => {
     const [mn, mx, st] = SLIDER[name];
-    return `<div class="sl"><div class="slv" id="slv-${name}">${label}</div><input type="range" aria-label="${name}" data-slider="${name}" min="${mn}" max="${Math.max(mx, v)}" step="${st}" value="${v}"></div>`;
+    return `<div class="sl"><div class="slv" id="slv-${name}">${label}</div><input type="range" aria-label="${CTRL[name]}" data-slider="${name}" min="${mn}" max="${Math.max(mx, v)}" step="${st}" value="${v}"></div>`;
   };
   // Plan-tab number control: buttons (+/−) or a slider, chosen in Settings.
   const control = (name, v, label, step) => (settings.planInput === 'sliders' ? slider(name, v, label) : stepper(name, v, label, step));
@@ -385,7 +412,7 @@
 
   function viewRecipe(id) {
     const r = RECIPE[id];
-    setHead(D('Recipe', 'Rezept'), true, plan ? '#/week' : '#/plan');
+    setHead(D('Recipe', 'Rezept'), true, lastPage || (plan ? '#/week' : '#/plan'));
     if (!r) { app.innerHTML = `<div class="card">${D('Recipe not found.', 'Rezept nicht gefunden.')}</div>`; return; }
     const d = servingCost(r, 'brand') - servingCost(r, 'store');
     app.innerHTML = `<div class="card"><h2>${esc(rname(r))}</h2><div class="mute">${esc(rsub(r))}</div>
@@ -437,7 +464,7 @@
         const nd = rows.filter((x) => checks[x.l.key]).length;
         html += `<div class="card"><div class="row"><h3>${DAYS[i]} · ${esc(rname(r))}</h3><span class="badge${nd === rows.length ? ' g' : ''}">${nd}/${rows.length}</span></div><div style="margin:4px 0 6px">${brandBtn(rid, cur)}</div>` + (vis.length ? vis.map((x) => {
           const it = ITEMS[x.iid]; const done = !!checks[x.l.key];
-          return `<div class="liw"><label class="li${done ? ' done' : ''}"><input type="checkbox" data-chk="${x.l.key}" ${done ? 'checked' : ''}><span class="n">${esc(iname(it))} <span class="badge">${STORES[x.l.store]}</span>${x.l.brand ? `<span class="badge">★ ${D('brand', 'Marke')}</span>` : ''}<div class="mute small">${x.l.product ? esc(x.l.product) + '<br>' : ''}${Math.round(x.q * 10) / 10} ${ul(it.unit)} ${D('for this meal · buy', 'für dieses Gericht · kaufen')} ${x.l.packs} × ${x.l.pack} ${ul(it.unit)}${x.l.meals.length > 1 ? ' ' + D('(shared with ' + (x.l.meals.length - 1) + ' other)', '(geteilt mit ' + (x.l.meals.length - 1) + ' weiteren)') : ''}</div></span><span class="p">${eur(x.l.total)}</span></label>${hasBrandIn(x.iid) && !done ? '<div class="lb">' + itemBtn(x.iid, x.l.tier, cur) + '</div>' : ''}</div>`;
+          return `<div class="liw"><label class="li${done ? ' done' : ''}"><input type="checkbox" data-chk="${x.l.key}" ${done ? 'checked' : ''}><span class="n">${esc(iname(it))} <span class="badge">${STORES[x.l.store]}</span>${x.l.brand ? `<span class="badge">★ ${D('brand', 'Marke')}</span>` : ''}<div class="mute small">${x.l.product ? esc(x.l.product) + '<br>' : ''}${Math.round(x.q * 10) / 10} ${ul(it.unit)} ${D('for this meal · buy', 'für dieses Gericht · kaufen')} ${x.l.packs} × ${x.l.pack} ${ul(it.unit)}${x.l.meals.length > 1 ? ' ' + D('(shared with ' + (x.l.meals.length - 1) + ' other meal' + (x.l.meals.length > 2 ? 's' : '') + ')', '(geteilt mit ' + (x.l.meals.length - 1) + ' weiteren)') : ''}</div></span><span class="p">${eur(x.l.total)}</span></label>${hasBrandIn(x.iid) && !done ? '<div class="lb">' + itemBtn(x.iid, x.l.tier, cur) + '</div>' : ''}</div>`;
         }).join('') : `<div class="mute small" style="padding:8px 0">${D('All ingredients ticked ✅', 'Alle Zutaten abgehakt ✅')}</div>`) + `<a class="small" href="#/recipe/${rid}">${D('Recipe', 'Rezept')}</a></div>`;
       });
     } else {
@@ -487,16 +514,16 @@
         const prods = (i.prod.pam || i.prod.gig) ? `<div class="mute small">${D('Store brand', 'Eigenmarke')} · ${i.prod.pam ? STORES.pam + ': ' + esc(i.prod.pam) : ''}${i.prod.pam && i.prod.gig ? ' · ' : ''}${i.prod.gig ? STORES.gig + ': ' + esc(i.prod.gig) : ''}</div>` : '';
         const bl = i.brand ? `<div class="mute small">${BR()} · ${['pam', 'gig'].filter((s) => i.brand[s]).map((s) => STORES[s] + ': ' + esc(i.brand[s].product) + ' ' + eur(i.brand[s].price) + (COUNTRY.blu && i.brand[s].blu != null ? ' (Blu Card ' + eur(i.brand[s].blu) + ')' : '')).join(' · ')}</div>` : '';
         const f = (k, lab, v, ed, cls) => `<div><label>${lab}</label><input inputmode="decimal" class="${ed ? 'ed' : ''} ${cls || ''}" data-p="${i.id}:${k}" value="${v == null ? '' : v.toFixed(2)}" placeholder="–"></div>`;
-        const gigPrice = o.gig != null ? o.gig : i.gig;
-        const bluVal = o.blu != null ? o.blu : (i.blu != null && i.blu < gigPrice ? i.blu : gigPrice); // Blu Card price: the regular price unless a card discount is known
+        const gigPrice = fieldPrice(i.id, 'gig');
+        const bluVal = fieldPrice(i.id, 'blu'); // Blu Card price: the regular price unless a card discount is known
         const bluDeal = COUNTRY.blu && i.brand && i.brand.gig && i.brand.gig.blu != null ? `<div class="small bludeal">💳 Blu Card deal: ${eur(i.brand.gig.blu)} on ${esc(i.brand.gig.product)} (regular ${eur(i.brand.gig.price)}, −${Math.round((1 - i.brand.gig.blu / i.brand.gig.price) * 100)}%)</div>` : '';
         return `<div class="pi"${COUNTRY.blu ? '' : ' style="grid-template-columns:repeat(2,1fr)"'}><div class="h"><b>${esc(iname(i))}</b> <span class="mute small">${D('per pack', 'pro Packung')}</span> ${tag} <a class="small" href="${link}" target="_blank" rel="noopener">${D('check online', 'online prüfen')}</a>${prods}${bl}</div>
-          ${f('pam', STORES.pam + ' €', o.pam != null ? o.pam : i.pam, o.pam != null)}${f('gig', STORES.gig + ' €', o.gig != null ? o.gig : i.gig, o.gig != null)}${COUNTRY.blu ? f('blu', 'Blu Card €', bluVal, o.blu != null, o.blu == null && bluVal === gigPrice ? 'same' : '') : ''}${bluDeal ? '<div class="h">' + bluDeal + '</div>' : ''}</div>`;
+          ${f('pam', STORES.pam + ' €', fieldPrice(i.id, 'pam'), o.pam != null)}${f('gig', STORES.gig + ' €', gigPrice, o.gig != null)}${COUNTRY.blu ? f('blu', 'Blu Card €', bluVal, o.blu != null, o.blu == null && bluVal === gigPrice ? 'same' : '') : ''}${bluDeal ? '<div class="h">' + bluDeal + '</div>' : ''}</div>`;
       }).join('') + `</div>
       <div class="card"><h3>${D('Backup / restore my edits', 'Meine Änderungen sichern / wiederherstellen')}</h3><textarea id="json" placeholder="${D('Export fills this box. Paste a backup here and tap Import.', 'Export füllt dieses Feld. Füge hier eine Sicherung ein und tippe auf Importieren.')}"></textarea>
       <button class="btn sec" id="exp">${D('Export my prices', 'Meine Preise exportieren')}</button><button class="btn sec" id="imp">${D('Import', 'Importieren')}</button><button class="btn sec" id="reset">${D('Remove my edits', 'Meine Änderungen entfernen')}</button></div>`;
     const qi = $('#q');
-    qi.addEventListener('input', () => { viewPrices.q = qi.value; const pos = qi.selectionStart; viewPrices(); const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); });
+    qi.addEventListener('input', () => { viewPrices.q = qi.value; const pos = qi.selectionStart; rerender(); const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); });
   }
 
   function viewMeals() {
@@ -513,7 +540,7 @@
         <div class="mute small">${esc(rsub(r))}</div><div class="small" style="margin-top:4px">${r.veg ? `<span class="badge g">${D('veg', 'veg')}</span>` : ''}${timeBadge(r)}${protBadge(r)}<span class="badge">≈${eur(servingCost(r, 'store'))}/${D('serving', 'Portion')}</span></div></div>
         <button class="chip${inPlan(r.id) ? ' on' : ''}" data-toggle="${r.id}">${inPlan(r.id) ? D('✓ In plan', '✓ Im Plan') : D('+ Add', '+ Hinzufügen')}</button></div></div>`).join('') || `<div class="card mute">${D('No meals match. Try fewer filters.', 'Keine Gerichte passen. Probiere weniger Filter.')}</div>`);
     const qi = $('#mq');
-    qi.addEventListener('input', () => { viewMeals.q = qi.value; const pos = qi.selectionStart; viewMeals(); const n = $('#mq'); n.focus(); n.setSelectionRange(pos, pos); });
+    qi.addEventListener('input', () => { viewMeals.q = qi.value; const pos = qi.selectionStart; rerender(); const n = $('#mq'); n.focus(); n.setSelectionRange(pos, pos); });
   }
 
   function viewSettings() {
@@ -534,11 +561,13 @@
     const b = $('#back'); b.hidden = !back; b.onclick = () => { location.hash = href || '#/plan'; };
     document.querySelectorAll('#tabs a').forEach((a) => a.classList.toggle('on', a.dataset.tab === tabFor()));
   }
-  function tabFor() { const h = location.hash; return ['list', 'prices', 'meals', 'settings'].find((t) => h.startsWith('#/' + t)) || 'plan'; }
+  function tabFor() { const h = location.hash.startsWith('#/recipe/') && lastPage ? lastPage : location.hash; return ['list', 'prices', 'meals', 'settings'].find((t) => h.startsWith('#/' + t)) || 'plan'; }
 
+  let lastPage = null; // the screen a recipe was opened from, so Back (and the tab bar) return there
   function route() {
     closeSheet();
     const h = location.hash || '#/plan';
+    if (!h.startsWith('#/recipe/')) lastPage = h;
     if (h.startsWith('#/options')) viewOptions();
     else if (h.startsWith('#/week')) viewWeek();
     else if (h.startsWith('#/recipe/')) viewRecipe(h.slice(9));
@@ -554,14 +583,16 @@
 
   // keep the screen awake while shopping (where the browser allows it)
   let wakeLock = null;
-  async function applyWake() {
+  // quiet: re-acquiring on launch or when the app comes back to the front, so only an explicit tap shows errors
+  async function applyWake(quiet) {
     try {
       if (settings.wake && 'wakeLock' in navigator && document.visibilityState === 'visible') { if (!wakeLock) { wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => { wakeLock = null; }); } }
       else if (wakeLock) { await wakeLock.release(); wakeLock = null; }
-      if (settings.wake && !('wakeLock' in navigator)) toast(D('Your browser cannot keep the screen on', 'Dein Browser kann den Bildschirm nicht anlassen'));
-    } catch (e) { toast(D('Could not keep the screen on', 'Bildschirm konnte nicht angelassen werden')); }
+      if (settings.wake && !('wakeLock' in navigator) && !quiet) toast(D('Your browser cannot keep the screen on', 'Dein Browser kann den Bildschirm nicht anlassen'));
+    } catch (e) { if (!quiet) toast(D('Could not keep the screen on', 'Bildschirm konnte nicht angelassen werden')); }
   }
-  document.addEventListener('visibilitychange', () => { if (settings.wake) applyWake(); });
+  document.addEventListener('visibilitychange', () => { if (settings.wake) applyWake(true); });
+  if (settings.wake) applyWake(true);
 
   // ---------- events ----------
   function runGenerate() {
@@ -628,17 +659,20 @@
     else if (d.doswap) { const [i, id] = d.doswap.split(':'); dropFromBrand(plan.ids[Number(i)]); plan.ids[Number(i)] = id; save(); closeSheet(); rerender(); toast(D('Meal swapped', 'Gericht getauscht')); }
     else if (d.toggle) {
       const id = d.toggle;
-      if (plan && plan.ids.includes(id)) { plan.ids = plan.ids.filter((x) => x !== id); dropFromBrand(id); if (!plan.ids.length) plan = null; }
+      if (plan && plan.ids.includes(id)) { plan.ids = plan.ids.filter((x) => x !== id); dropFromBrand(id); if (!plan.ids.length) { plan = null; checks = {}; } }
       else if (plan && plan.ids.length >= 7) { toast(D('Your week is full (7 meals)', 'Deine Woche ist voll (7 Gerichte)')); return; }
       else { plan = plan || { ids: [], brand: [], items: {} }; plan.ids.push(id); }
       save(); rerender();
     }
-    else if (d.remove !== undefined) { dropFromBrand(plan.ids[Number(d.remove)]); plan.ids.splice(Number(d.remove), 1); if (!plan.ids.length) plan = null; save(); closeSheet(); location.hash = plan ? '#/week' : '#/meals'; rerender(); toast(D('Meal removed', 'Gericht entfernt')); }
+    else if (d.remove !== undefined) { dropFromBrand(plan.ids[Number(d.remove)]); plan.ids.splice(Number(d.remove), 1); if (!plan.ids.length) { plan = null; checks = {}; } save(); closeSheet(); location.hash = plan ? '#/week' : '#/meals'; rerender(); toast(D('Meal removed', 'Gericht entfernt')); }
     else if (t.id === 'wipe') { if (confirm(D('Delete your plan, ticks and price edits?', 'Plan, Haken und Preis-Änderungen löschen?'))) { plan = null; options = null; checks = {}; overrides = {}; save(); rerender(); toast(D('Cleared', 'Gelöscht')); } }
     else if (t.id === 'clearchk') { checks = {}; save(); rerender(); }
     else if (t.id === 'exp') { const j = JSON.stringify(overrides); $('#json').value = j; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(j).then(() => toast(D('Copied', 'Kopiert')), () => toast(D('Select and copy the text', 'Text markieren und kopieren'))); else toast(D('Select and copy the text', 'Text markieren und kopieren')); }
     else if (t.id === 'imp') {
-      try { const o = JSON.parse($('#json').value); if (typeof o !== 'object' || Array.isArray(o) || o === null) throw 0; overrides = o; save(); rerender(); toast(D('Imported', 'Importiert')); } catch (x) { toast(D('That is not a valid backup', 'Das ist keine gültige Sicherung')); }
+      let raw = null; try { raw = JSON.parse($('#json').value); } catch (x) { /* not JSON */ }
+      const o = cleanOverrides(raw);
+      if (!o || (!Object.keys(o).length && Object.keys(raw).length)) { toast(D('That is not a valid backup', 'Das ist keine gültige Sicherung')); return; }
+      overrides = o; save(); rerender(); toast(D('Imported', 'Importiert'));
     } else if (t.id === 'reset') { overrides = {}; save(); rerender(); toast(D('Prices reset', 'Preise zurückgesetzt')); }
   });
   document.addEventListener('change', (e) => {
@@ -648,7 +682,7 @@
       const [id, s] = c.dataset.p.split(':');
       if (s === 'blu' && String(c.value).trim() === '') { if (overrides[id]) { delete overrides[id].blu; if (!['pam', 'gig', 'blu'].some((k) => overrides[id][k] != null)) delete overrides[id]; } options = null; save(); return; }
       const v = parseFloat(String(c.value).replace(',', '.'));
-      if (!isFinite(v) || v <= 0 || v > 999) { c.value = (s === 'blu' ? (bluOf(id) || 0) : price(id, s)).toFixed(2); toast(D('Enter a price like 1,29', 'Gib einen Preis wie 1,29 ein')); return; }
+      if (!isFinite(v) || v <= 0 || v > 999) { c.value = fieldPrice(id, s).toFixed(2); toast(D('Enter a price like 1,29', 'Gib einen Preis wie 1,29 ein')); return; }
       overrides[id] = Object.assign({}, overrides[id], { [s]: Math.round(v * 100) / 100, since: priceMeta.updated || '' });
       c.value = v.toFixed(2); c.classList.add('ed');
       options = null; // stale after price changes
@@ -666,7 +700,7 @@
   document.addEventListener('change', (e) => { if (e.target.dataset && e.target.dataset.slider) { save(); rerender(); } });
   window.addEventListener('hashchange', route);
   route();
-  loadPrices().then(() => { if (/#\/(prices|settings|list|week|options|plan|meals)?$/.test(location.hash) || !location.hash) rerender(); });
+  loadPrices().then(rerender); // every screen shows prices (recipes too), so redraw once the checked ones are in
 
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
