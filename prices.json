@@ -1,11 +1,11 @@
 {
- "updated": "2026-10-04",
+ "updated": "2026-10-07",
  "where": {
   "pam": "Pam a Casa online catalogue (default store)",
   "gig": "Il Gigante San Giuliano Milanese, Via della Pace 45 (store pickup prices)"
  },
  "rule": "Store tier: cheapest standard product, store brand where one exists. Name-brand tier: a well-known brand. Regular shelf prices, promos excluded.",
- "blu": "Blu Card prices found this week only on name-brand products: passata (Petti), tuna (Consorcio), canned legumes (Valfrutta Bio), frozen peas (FRoSTA).",
+ "blu": "Blu Card prices (Il Gigante not re-checked on 2026-10-07, values from 2026-10-04) only on name-brand products: passata (Petti), tuna (Consorcio), canned legumes (Valfrutta Bio), frozen peas (FRoSTA).",
  "items": {
   "spaghetti": {
    "pam": {
@@ -425,9 +425,9 @@
    },
    "brand": {
     "pam": {
-     "price": 1.95,
+     "price": 2.59,
      "pack": 1000,
-     "product": "Granarolo Latte intero UHT 1 l"
+     "product": "Granarolo Latte intero Italia UHT 1 l"
     },
     "gig": {
      "price": 1.79,
@@ -497,7 +497,7 @@
    },
    "brand": {
     "pam": {
-     "price": 4.05,
+     "price": 3.59,
      "pack": 90,
      "product": "Parmareggio Parmigiano Reggiano grattugiato 90 g"
     },
@@ -654,9 +654,9 @@
   },
   "pomodorini": {
    "pam": {
-    "price": 3.49,
+    "price": 3.99,
     "pack": 500,
-    "product": "Pomodoro ciliegino fresco 500 g"
+    "product": "Verdura da crudo Pomodoro ciliegino 500 g"
    },
    "gig": {
     "price": 1.15,
@@ -690,7 +690,7 @@
   },
   "peperoni": {
    "pam": {
-    "price": 2.21,
+    "price": 2.69,
     "pack": 600,
     "product": "Verdura fresca Peperoni rossi 600 g"
    },
@@ -837,7 +837,7 @@
   },
   "limoni": {
    "pam": {
-    "price": 1.29,
+    "price": 1.19,
     "pack": 500,
     "product": "Limoni 500 g"
    },
@@ -847,5 +847,10 @@
     "product": "Limoni sold by weight (2,68 €/kg), 500 g"
    }
   }
+ },
+ "last_update": {
+  "at": "2026-10-07T11:09:07Z",
+  "changed": 5,
+  "note": "latte, parmigiano, pomodorini..."
  }
 }
