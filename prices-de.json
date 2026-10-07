@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-04",
+ "updated": "2026-10-08",
  "where": {
   "ede": "Edeka24, der Versandshop von EDEKA (nicht die Preise im Markt in Hamburg). Nur haltbare Ware; frische Artikel sind Schätzungen und folgen dem Rewe-Preis.",
   "rew": "REWE Lieferservice, Lieferung nach Hamburg-Eppendorf/Hoheluft (Online-Preise)"
@@ -75,7 +75,7 @@
   },
   "carote": {
    "rew": {
-    "price": 1.25,
+    "price": 1.49,
     "pack": 1000,
     "product": "Karotten 1 kg"
    }
@@ -96,9 +96,9 @@
   },
   "cipolle": {
    "rew": {
-    "price": 1.69,
-    "pack": 1000,
-    "product": "Kartoffelhof Bahde Gelbe Zwiebeln 1 kg"
+    "price": 1.79,
+    "pack": 750,
+    "product": "Bio Zwiebeln gelb 750 g im Netz"
    }
   },
   "cocco": {
@@ -416,7 +416,7 @@
   },
   "peperoni": {
    "rew": {
-    "price": 1.59,
+    "price": 2.19,
     "pack": 500,
     "product": "Paprika rot 500 g"
    }
@@ -667,10 +667,15 @@
   },
   "zucchine": {
    "rew": {
-    "price": 0.92,
+    "price": 0.96,
     "pack": 400,
-    "product": "Zucchini grün ca. 400 g (2,29 €/kg)"
+    "product": "Zucchini grün ca. 400 g (2,39 €/kg)"
    }
   }
+ },
+ "last_update": {
+  "at": "2026-10-07T23:37:19Z",
+  "changed": 4,
+  "note": "carote, cipolle, peperoni..."
  }
 }
