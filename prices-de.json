@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-08",
+ "updated": "2026-10-14",
  "where": {
   "ede": "Edeka24, der Versandshop von EDEKA (nicht die Preise im Markt in Hamburg). Nur haltbare Ware; frische Artikel sind Schätzungen und folgen dem Rewe-Preis.",
   "rew": "REWE Lieferservice, Lieferung nach Hamburg-Eppendorf/Hoheluft (Online-Preise)"
@@ -47,7 +47,7 @@
   },
   "broccoli": {
    "rew": {
-    "price": 1.99,
+    "price": 1.79,
     "pack": 500,
     "product": "Broccoli 500 g"
    }
@@ -92,6 +92,11 @@
      "pack": 265,
      "product": "Bonduelle Kichererbsen 265 g"
     }
+   },
+   "ede": {
+    "price": 1.59,
+    "pack": 400,
+    "product": "EDEKA Herzstücke Kicher Erbsen 400 g"
    }
   },
   "cipolle": {
@@ -141,9 +146,9 @@
   },
   "fagioli": {
    "ede": {
-    "price": 1.79,
-    "pack": 400,
-    "product": "EDEKA Herzstücke Weiße Riesenbohnen 400 g"
+    "price": 1.99,
+    "pack": 530,
+    "product": "EDEKA Herzstücke Grosse Bohnen 530 g"
    },
    "rew": {
     "price": 1.49,
@@ -269,7 +274,7 @@
   },
   "melanzane": {
    "rew": {
-    "price": 1.49,
+    "price": 1.39,
     "pack": 300,
     "product": "Aubergine 1 Stück (ca. 300 g)"
    }
@@ -366,7 +371,7 @@
   },
   "patate": {
    "rew": {
-    "price": 2.49,
+    "price": 2.79,
     "pack": 1500,
     "product": "Bio Kartoffeln vorwiegend festkochend 1,5 kg"
    }
@@ -667,15 +672,15 @@
   },
   "zucchine": {
    "rew": {
-    "price": 0.96,
-    "pack": 400,
-    "product": "Zucchini grün ca. 400 g (2,39 €/kg)"
+    "price": 0.7,
+    "pack": 350,
+    "product": "Zucchini grün ca. 350 g (1,99 €/kg)"
    }
   }
  },
  "last_update": {
-  "at": "2026-10-07T23:37:19Z",
-  "changed": 4,
-  "note": "carote, cipolle, peperoni..."
+  "at": "2026-10-14T11:17:10Z",
+  "changed": 5,
+  "note": "broccoli, fagioli, melanzane..."
  }
 }
