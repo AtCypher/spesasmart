@@ -1,11 +1,11 @@
 {
- "updated": "2026-10-07",
+ "updated": "2026-10-14",
  "where": {
   "pam": "Pam a Casa online catalogue (default store)",
   "gig": "Il Gigante San Giuliano Milanese, Via della Pace 45 (store pickup prices)"
  },
  "rule": "Store tier: cheapest standard product, store brand where one exists. Name-brand tier: a well-known brand. Regular shelf prices, promos excluded.",
- "blu": "Blu Card prices (Il Gigante not re-checked on 2026-10-07, values from 2026-10-04) only on name-brand products: passata (Petti), tuna (Consorcio), canned legumes (Valfrutta Bio), frozen peas (FRoSTA).",
+ "blu": "Blu Card prices (checked 2026-10-14) only on name-brand products: Parmissimo Parmigiano grattugiato 90 g (1,79) and Galbani Santa Lucia ricotta 250 g (0,99). The earlier card promos on Valfrutta Bio legumes, Petti passata, Consorcio tuna and FRoSTA peas have ended.",
  "items": {
   "spaghetti": {
    "pam": {
@@ -25,7 +25,7 @@
      "product": "De Cecco Spaghetti 500 g"
     },
     "gig": {
-     "price": 1.66,
+     "price": 1.65,
      "pack": 500,
      "product": "De Cecco Spaghetti N°12 500 g"
     }
@@ -49,7 +49,7 @@
      "product": "Barilla Penne rigate al bronzo 500 g"
     },
     "gig": {
-     "price": 1.66,
+     "price": 1.64,
      "pack": 500,
      "product": "De Cecco Penne rigate N°41 500 g"
     }
@@ -148,9 +148,9 @@
   },
   "tortillas": {
    "pam": {
-    "price": 1.25,
-    "pack": 200,
-    "product": "PAM Tortilla naturale 200 g"
+    "price": 0.75,
+    "pack": 100,
+    "product": "PAM Tortilla classica 100 g"
    },
    "gig": {
     "price": 3.7,
@@ -183,10 +183,9 @@
      "product": "Colfiorito Ceci 800 g"
     },
     "gig": {
-     "price": 1.85,
+     "price": 2.17,
      "pack": 360,
-     "product": "Valfrutta Bio Ceci 360 g",
-     "blu": 1.29
+     "product": "Valfrutta Bio Ceci 360 g"
     }
    }
   },
@@ -208,10 +207,9 @@
      "product": "Colfiorito Lenticchie Italia 400 g"
     },
     "gig": {
-     "price": 1.85,
+     "price": 2.19,
      "pack": 360,
-     "product": "Valfrutta Bio Lenticchie 360 g",
-     "blu": 1.29
+     "product": "Valfrutta Bio Lenticchie 360 g"
     }
    }
   },
@@ -233,10 +231,9 @@
      "product": "Valfrutta Fagioli cannellini spollichini 360 g"
     },
     "gig": {
-     "price": 1.85,
+     "price": 2.17,
      "pack": 360,
-     "product": "Valfrutta Bio Cannellini 360 g",
-     "blu": 1.29
+     "product": "Valfrutta Bio Cannellini 360 g"
     }
    }
   },
@@ -247,7 +244,7 @@
     "product": "PAM Passata di pomodoro casereccia 680 g"
    },
    "gig": {
-    "price": 0.95,
+    "price": 0.98,
     "pack": 500,
     "product": "Pomì Passata di pomodoro 500 g"
    },
@@ -258,10 +255,9 @@
      "product": "Le Conserve della Nonna Passata di pomodoro 700 g"
     },
     "gig": {
-     "price": 1.98,
+     "price": 2.07,
      "pack": 700,
-     "product": "Petti Il Delicato Passata extrafine 700 g",
-     "blu": 1.38
+     "product": "Petti Il Delicato Passata extrafine 700 g"
     }
    }
   },
@@ -309,8 +305,7 @@
     "gig": {
      "price": 7.99,
      "pack": 175,
-     "product": "Consorcio Tonno in olio d'oliva 175 g",
-     "blu": 3.99
+     "product": "Consorcio Tonno in olio d'oliva 175 g"
     }
    }
   },
@@ -321,7 +316,7 @@
     "product": "Viva la Mamma Pesto fresco 90 g"
    },
    "gig": {
-    "price": 1.85,
+    "price": 1.79,
     "pack": 190,
     "product": "IL GIGANTE Pesto alla genovese 190 g"
    },
@@ -358,7 +353,7 @@
    },
    "brand": {
     "pam": {
-     "price": 1.65,
+     "price": 1.45,
      "pack": 10,
      "product": "Knorr Dado vegetale 10 dadi"
     }
@@ -414,9 +409,9 @@
   },
   "latte": {
    "pam": {
-    "price": 1.75,
+    "price": 0.89,
     "pack": 1000,
-    "product": "Friuli Latte intero UHT 1 l"
+    "product": "PAM Latte UHT intero 1 l"
    },
    "gig": {
     "price": 1.25,
@@ -425,7 +420,7 @@
    },
    "brand": {
     "pam": {
-     "price": 2.59,
+     "price": 2.35,
      "pack": 1000,
      "product": "Granarolo Latte intero Italia UHT 1 l"
     },
@@ -438,7 +433,7 @@
   },
   "uova": {
    "pam": {
-    "price": 2.35,
+    "price": 2.25,
     "pack": 6,
     "product": "Naturelle 6 uova Piemonte"
    },
@@ -497,14 +492,15 @@
    },
    "brand": {
     "pam": {
-     "price": 3.59,
+     "price": 2.85,
      "pack": 90,
      "product": "Parmareggio Parmigiano Reggiano grattugiato 90 g"
     },
     "gig": {
-     "price": 2.69,
+     "price": 2.76,
      "pack": 90,
-     "product": "Parmissimo Parmigiano Reggiano DOP grattugiato 90 g"
+     "product": "Parmissimo Parmigiano Reggiano DOP grattugiato 90 g",
+     "blu": 1.79
     }
    }
   },
@@ -526,15 +522,16 @@
      "product": "Galbani Ricotta fresca Vallelata 250 g"
     },
     "gig": {
-     "price": 1.31,
+     "price": 1.32,
      "pack": 250,
-     "product": "Galbani Santa Lucia Ricotta 250 g"
+     "product": "Galbani Santa Lucia Ricotta 250 g",
+     "blu": 0.99
     }
    }
   },
   "burro": {
    "pam": {
-    "price": 3.89,
+    "price": 3.79,
     "pack": 250,
     "product": "Soresina Burro 250 g"
    },
@@ -570,7 +567,7 @@
   },
   "pollo": {
    "pam": {
-    "price": 5.28,
+    "price": 5.32,
     "pack": 400,
     "product": "PAM Petto di pollo a fette 400 g"
    },
@@ -630,9 +627,9 @@
   },
   "merluzzo": {
    "pam": {
-    "price": 8.85,
-    "pack": 360,
-    "product": "Findus Filetti di merluzzo surgelati 360 g"
+    "price": 4.49,
+    "pack": 300,
+    "product": "PAM Cuori di merluzzo MSC 300 g"
    },
    "gig": {
     "price": 8.49,
@@ -647,9 +644,9 @@
     "product": "Salmone 300 g"
    },
    "gig": {
-    "price": 11.44,
-    "pack": 400,
-    "product": "Salmone a fette, sold by weight (28,60 €/kg), ~400 g"
+    "price": 10.26,
+    "pack": 300,
+    "product": "Filetto di salmone, sold by weight (34,20 €/kg), ~300 g"
    }
   },
   "pomodorini": {
@@ -671,14 +668,14 @@
     "product": "Zucchine 500 g"
    },
    "gig": {
-    "price": 1.34,
+    "price": 1.49,
     "pack": 750,
-    "product": "Zucchine, sold by weight (1,78 €/kg), ~750 g"
+    "product": "Zucchine, sold by weight (1,98 €/kg), ~750 g"
    }
   },
   "melanzane": {
    "pam": {
-    "price": 1.99,
+    "price": 1.84,
     "pack": 740,
     "product": "Verdura fresca Melanzane tonde 740 g"
    },
@@ -731,9 +728,9 @@
     "product": "PAM Carote 700 g"
    },
    "gig": {
-    "price": 1.78,
+    "price": 1.66,
     "pack": 1200,
-    "product": "Carote, sold by weight (1,48 €/kg), ~1,2 kg"
+    "product": "Carote, sold by weight (1,38 €/kg), ~1,2 kg"
    }
   },
   "patate": {
@@ -800,7 +797,7 @@
   },
   "piselli": {
    "pam": {
-    "price": 1.29,
+    "price": 1.25,
     "pack": 450,
     "product": "PAM Piselli finissimi surgelati 450 g"
    },
@@ -816,10 +813,9 @@
      "product": "Findus Piselli novelli 450 g"
     },
     "gig": {
-     "price": 4.59,
+     "price": 4.6,
      "pack": 850,
-     "product": "FRoSTA Finissimi piselli piccoli e teneri 850 g",
-     "blu": 2.75
+     "product": "FRoSTA Finissimi piselli piccoli e teneri 850 g"
     }
    }
   },
@@ -837,20 +833,20 @@
   },
   "limoni": {
    "pam": {
-    "price": 1.19,
+    "price": 1.69,
     "pack": 500,
-    "product": "Limoni 500 g"
+    "product": "Tesori dell'Arca Limoni IGP di Siracusa 500 g"
    },
    "gig": {
-    "price": 1.34,
+    "price": 1.88,
     "pack": 500,
-    "product": "Limoni sold by weight (2,68 €/kg), 500 g"
+    "product": "Limoni di Siracusa IGP rete 500 g"
    }
   }
  },
  "last_update": {
-  "at": "2026-10-07T11:09:07Z",
-  "changed": 5,
-  "note": "latte, parmigiano, pomodorini..."
+  "at": "2026-10-14T11:21:59Z",
+  "changed": 27,
+  "note": "spaghetti, penne, tortillas..."
  }
 }
