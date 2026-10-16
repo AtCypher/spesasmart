@@ -1,11 +1,11 @@
 {
- "updated": "2026-10-14",
+ "updated": "2026-10-16",
  "where": {
   "pam": "Pam a Casa online catalogue (default store)",
   "gig": "Il Gigante San Giuliano Milanese, Via della Pace 45 (store pickup prices)"
  },
  "rule": "Store tier: cheapest standard product, store brand where one exists. Name-brand tier: a well-known brand. Regular shelf prices, promos excluded.",
- "blu": "Blu Card prices (checked 2026-10-14) only on name-brand products: Parmissimo Parmigiano grattugiato 90 g (1,79) and Galbani Santa Lucia ricotta 250 g (0,99). The earlier card promos on Valfrutta Bio legumes, Petti passata, Consorcio tuna and FRoSTA peas have ended.",
+ "blu": "Blu Card prices (checked 2026-10-16) only on name-brand products: Parmissimo Parmigiano grattugiato 90 g (1,79) and Galbani Santa Lucia ricotta 250 g (0,99). No Blu Card prices on the store-tier products.",
  "items": {
   "spaghetti": {
    "pam": {
@@ -20,7 +20,7 @@
    },
    "brand": {
     "pam": {
-     "price": 1.75,
+     "price": 1.79,
      "pack": 500,
      "product": "De Cecco Spaghetti 500 g"
     },
@@ -838,15 +838,15 @@
     "product": "Tesori dell'Arca Limoni IGP di Siracusa 500 g"
    },
    "gig": {
-    "price": 1.88,
+    "price": 1.78,
     "pack": 500,
     "product": "Limoni di Siracusa IGP rete 500 g"
    }
   }
  },
  "last_update": {
-  "at": "2026-10-14T11:21:59Z",
-  "changed": 27,
-  "note": "spaghetti, penne, tortillas..."
+  "at": "2026-10-16T15:07:32Z",
+  "changed": 2,
+  "note": "spaghetti, limoni"
  }
 }
